@@ -11,7 +11,7 @@ BASE_DIR = Path(__file__).resolve().parent.parent
 LANGUAGE_CODE = 'es-ES'
 TIME_ZONE = 'Europe/Madrid'
 USE_I18N = True # Activa la internacionalización (traducciones).
-USE_L10N = True # Activa la localización (formato de fechas, números, etc.).
+L10N = True # Activa la localización (formato de fechas, números, etc.).
 USE_TZ = True # Hace que Django almacene los datos en UTC internamente y los convierta a la zona horaria configurada (TIME_ZONE) cuando sea necesario.
 
 SECRET_KEY = os.environ.get('SECRET_KEY')
@@ -158,7 +158,7 @@ ROOT_URLCONF = 'core.urls'
 TEMPLATES = [
     {
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
-        'DIRS': [os.path.join(BASe_DIR, 'build')],
+        'DIRS': [os.path.join(BASE_DIR, 'out')],
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
@@ -203,17 +203,6 @@ AUTH_PASSWORD_VALIDATORS = [
     },
 ]
 
-
-# Internationalization
-# https://docs.djangoproject.com/en/4.2/topics/i18n/
-
-LANGUAGE_CODE = 'es-ES'
-TIME_ZONE = 'Europe/Madrid'
-USE_I18N = True
-L10N = True
-USE_TZ = True
-
-
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
@@ -223,7 +212,7 @@ MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
 MEDIA_URL = '/media/'
 
 STATICFILES_DIRS = [
-    os.path.join(BASE_DIR, 'build/static')
+    os.path.join(BASE_DIR, 'out/static')
 ]
 
 # Default primary key field type
@@ -239,6 +228,7 @@ REST_FRAMEWORK = {
     ]
 }
 
+CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEV')
 CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEV')
 CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEV')
 
@@ -247,6 +237,7 @@ EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 if not DEBUG:
     ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEPLOY')
     CORS_ORIGIN_WHITELIST = env.list('CORS_ORIGIN_WHITELIST_DEPLOY')
+    CORS_ALLOWED_ORIGINS = env.list('CORS_ALLOWED_ORIGINS_DEPLOY')
     CSRF_TRUSTED_ORIGINS = env.list('CSRF_TRUSTED_ORIGINS_DEPLOY')
     DATABASES = {
     'default': env.db("DATABASE_URL"),

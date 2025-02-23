@@ -314,4 +314,6 @@ psd
 thumb
 sketch
 
+.dbdata
+
 # End of https://www.toptal.com/developers/gitignore/api/react,django,nextjs,python

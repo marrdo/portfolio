@@ -34,7 +34,7 @@ DJANGO_APPS = [
 ]
 
 PROJECT_APPS = [
-   
+   'apps.blog'
 ]
 
 THIRD_PARTY_APPS = [
@@ -179,11 +179,14 @@ WSGI_APPLICATION = 'core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',  # Motor PostgreSQL
+        'NAME': os.environ.get('DB_NAME', default=''),  # Nombre de tu base de datos
+        'USER': os.environ.get('DB_USER', default=''),  # Usuario de PostgreSQL
+        'PASSWORD': os.environ.get('DB_PASSWORD', default=''),  # Contraseña del usuario
+        'HOST': os.environ.get('DB_HOST', default=''),  # Si está en el mismo PC
+        'PORT': os.environ.get('DB_PORT', default=''),  # Puerto por defecto de PostgreSQL
     }
 }
-
 
 # Password validation
 # https://docs.djangoproject.com/en/4.2/ref/settings/#auth-password-validators
@@ -206,6 +209,7 @@ AUTH_PASSWORD_VALIDATORS = [
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/4.2/howto/static-files/
 STATIC_ROOT = os.path.join(BASE_DIR, 'static')
+STATIC_LOCATION = 'static'
 STATIC_URL = 'static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')

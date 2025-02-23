@@ -8,12 +8,6 @@ import store from "@/store";
 import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 
-
-const geistSans = Geist({
-  variable: "--font-geist-sans",
-  subsets: ["latin"],
-});
-
 const geistMono = Geist_Mono({
   variable: "--font-geist-mono",
   subsets: ["latin"],
@@ -27,9 +21,9 @@ export default function RootLayout({
   return (
     <Provider store={store}>
       <html lang="es">
-        <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <body className={`${geistMono.variable} bg-black text-green-400 font-mono`}> 
           <Header />
-            <main>
+            <main className="min-h-screen p-6 text-center">
               {children}
             </main>
           <Footer />

@@ -73,7 +73,7 @@ customColorPalette = [
 ]
 
 CKEDITOR_5_CUSTOM_CSS = 'path_to.css' # optional
-CKEDITOR_5_FILE_STORAGE = "/media/" # optional
+CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage" # optional
 CKEDITOR_5_CONFIGS = {
     'default': {
         'toolbar': {
@@ -213,7 +213,7 @@ STATIC_LOCATION = 'static'
 STATIC_URL = 'static/'
 
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
-MEDIA_URL = '/media/'
+MEDIA_URL = 'media/'
 
 STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'out/static')

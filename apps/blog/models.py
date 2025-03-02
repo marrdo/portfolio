@@ -3,6 +3,7 @@ import uuid
 from django.db import models
 from django.utils import timezone
 from django.utils.text import slugify
+from django_ckeditor_5.fields import CKEditor5Field
 
 def blog_thumail_directory(instance, filename):
     """Define la ruta donde se guardarán las imágenes de los posts."""
@@ -30,7 +31,6 @@ class Category(models.Model):
     slug = models.CharField(max_length=128, unique=True)
     created_at = models.DateTimeField(default=timezone.now)
     update_at = models.DateTimeField(auto_now=True)
-    
     def __str__(self):
         """Retorna el nombre de la categoría como representación en string."""
         return self.name
@@ -60,7 +60,7 @@ class Post(models.Model):
     id= models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
     title = models.CharField(max_length=128)
     description = models.CharField(max_length=256)
-    content = models.TextField()
+    content = CKEditor5Field('Content', config_name='extends')
     thumbnail = models.ImageField(upload_to=blog_thumail_directory)
     keywords = models.TextField()
     slug = models.CharField(max_length=128, unique=True)
@@ -82,6 +82,11 @@ class Post(models.Model):
     def __str__(self):
         """Retorna el título del post como representación en string."""
         return self.title
+class PostView(models.Model):
+    id = models.UUIDField(primary_key=True, default=uuid.uuid4, editable=False)
+    post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='post_view')
+    ip_address = models.GenericIPAddressField()
+    timestamp = models.DateTimeField(auto_now_add=True)
 class Heading(models.Model):
     """
     Representa un encabezado dentro de un post.
@@ -92,17 +97,17 @@ class Heading(models.Model):
     post = models.ForeignKey(Post, on_delete=models.PROTECT, related_name='headings')#Si se borra el heading no se borra el POST.
     title = models.CharField(max_length=255)
     slug = models.CharField(max_length=255, unique=True)
-    # level = models.IntegerField(
-    #     choices=(
-    #         (1,"H1"),
-    #         (2,"H2"),
-    #         (3,"H3"),
-    #         (4,"H4"),
-    #         (5,"H5"),
-    #         (6,"H6"),
-    #     )
-    # )
-    level = models.CharField(choices=[(i, f"H{i}") for i in range(1, 7)])
+    level = models.IntegerField(
+        choices=(
+            (1,"H1"),
+            (2,"H2"),
+            (3,"H3"),
+            (4,"H4"),
+            (5,"H5"),
+            (6,"H6"),
+        )
+    )
+    # level = models.CharField(choices=[(i, f"H{i}") for i in range(1, 7)])
     order = models.PositiveIntegerField()
     
     class Meta:

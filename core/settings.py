@@ -79,7 +79,8 @@ CKEDITOR_5_CONFIGS = {
         'toolbar': {
             'items': ['heading', '|', 'bold', 'italic', 'link',
                         'bulletedList', 'numberedList', 'blockQuote', 'imageUpload', ],
-                    }
+                    },
+        'language' : 'es'
 
     },
     'extends': {

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Heading
+from .models import Post, Category, Heading, PostAnalytics
 # Register your models here.
 
 class HeadingInline(admin.TabularInline):
@@ -8,6 +8,10 @@ class HeadingInline(admin.TabularInline):
     fields = ('title', 'level', 'order', 'slug')
     prepopulated_fields = {'slug' : ('title',)}
     ordering = ('order',)
+class PostAnalyticsInline(admin.StackedInline):
+    model = PostAnalytics
+    readonly_fields = ('impressions', 'clicks')
+    can_delete = False
 @admin.register(Category)
 class CategoryAdmin(admin.ModelAdmin):
     list_display = ('name', 'title', 'parent', 'slug')
@@ -39,7 +43,7 @@ class PostAdmin(admin.ModelAdmin):
             'fields' : ('status', 'created_at', 'update_at')
         })
     )
-    inlines = [HeadingInline]
+    inlines = [HeadingInline, PostAnalyticsInline]
 @admin.register(Heading)
 class HeadingModel(admin.ModelAdmin):
     list_display = ('title', 'post','level', 'order')
@@ -48,3 +52,9 @@ class HeadingModel(admin.ModelAdmin):
     ordering = ('post', 'order')
     prepopulated_fields = {'slug' : ('title',)}
     
+@admin.register(PostAnalytics)
+class PostAnalyticsAdmin(admin.ModelAdmin):
+    list_display = ('post', 'impressions', 'clicks')
+    search_fields = ('post__title',)
+    ordering = ('-impressions', '-clicks')
+

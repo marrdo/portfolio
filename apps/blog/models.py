@@ -5,13 +5,20 @@ from django.utils import timezone
 from django.utils.text import slugify
 from django_ckeditor_5.fields import CKEditor5Field
 
-def blog_thumail_directory(instance, filename):
+def blog_thumbnail_directory(instance, filename):
     """Define la ruta donde se guardarán las imágenes de los posts."""
     return "blog/{0}/{1}".format(instance.title, filename)
 
-def category_thumail_directory(instance, filename):
+def category_thumbnail_directory(instance, filename):
     """Define la ruta donde se guardarán las imágenes de las categorías."""
     return "blog_categories/{0}/{1}".format(instance.name, filename)
+
+def blog_seo_og_thumbnail_directory(instance, filename):
+    """Define la ruta donde se guardarán las imágenes de las etiquetas SEO."""
+    return "blog/SEO/og/{0}/{1}".format(instance.name, filename)
+def blog_seo_twitter_thumbnail_directory(instance, filename):
+    """Define la ruta donde se guardarán las imágenes de las etiquetas SEO."""
+    return "blog/SEO/twitter/{0}/{1}".format(instance.name, filename)
 
 # Cada clase represednta una tabla de la bdd y cada atributo de la clase representa una columna de la tabla.
 # Cada objeto de la clase representa una fila de la tabla.
@@ -27,7 +34,7 @@ class Category(models.Model):
     name = models.CharField(max_length=255, unique=True)
     title = models.CharField(max_length=255, blank=True, null=True)
     description = models.TextField(blank=True, null=True)
-    thumbnail = models.ImageField(upload_to=category_thumail_directory, blank=True, null=True)
+    thumbnail = models.ImageField(upload_to=category_thumbnail_directory, blank=True, null=True)
     slug = models.CharField(max_length=128, unique=True)
     created_at = models.DateTimeField(default=timezone.now)
     update_at = models.DateTimeField(auto_now=True)
@@ -37,7 +44,7 @@ class Category(models.Model):
     def save(self, *args, **kwargs):
         """Genera automáticamente el `slug` basado en el nombre si no está definido."""
         if not self.slug:
-            self.slug = slugify(self.title)
+            self.slug = slugify(self.title or self.name)
         super().save(*args, **kwargs)
 
 class Post(models.Model):
@@ -61,7 +68,7 @@ class Post(models.Model):
     title = models.CharField(max_length=128)
     description = models.CharField(max_length=256)
     content = CKEditor5Field('Content', config_name='extends')
-    thumbnail = models.ImageField(upload_to=blog_thumail_directory)
+    thumbnail = models.ImageField(upload_to=blog_thumbnail_directory)
     keywords = models.TextField()
     slug = models.CharField(max_length=128, unique=True)
     category = models.ForeignKey(Category, on_delete=models.PROTECT)#Si se borra la categoría no se borra el POST.
@@ -70,6 +77,14 @@ class Post(models.Model):
     status = models.CharField(max_length=16, choices=options, default="draft")
     objects = models.Manager() # The default manager.
     postobjects = PostObjects() # The custom manager.
+    # SEO
+    meta_description = models.CharField(max_length=255, null=True, blank=True)
+    og_title = models.CharField(max_length=256, blank=True, null=True)
+    og_description = models.CharField(max_length=256, blank=True, null=True)
+    og_image = models.ImageField(upload_to=blog_seo_og_thumbnail_directory,  blank=True, null=True)
+    twitter_title = models.CharField(max_length=256, blank=True, null=True)
+    twitter_description = models.CharField(max_length=256, blank=True, null=True)
+    twitter_image = models.ImageField(upload_to=blog_seo_twitter_thumbnail_directory,  blank=True, null=True)
     class Meta:
         """Configura el orden predeterminado de los posts en consultas."""
         ordering = ["status", "-created_at",]
@@ -119,3 +134,16 @@ class Heading(models.Model):
         if not self.slug:
             self.slug = slugify(self.title)
         super().save(*args, **kwargs)
+class PostAnalytics(models.Model):
+    post = models.OneToOneField('Post', on_delete=models.CASCADE, related_name='analytics')
+    impressions = models.PositiveIntegerField(default=0)  # Veces que se muestra en la lista
+    clicks = models.PositiveIntegerField(default=0)  # Veces que alguien hace clic
+
+    def ctr(self):
+        """Calcula el Click-Through Rate (CTR)."""
+        if self.impressions == 0:
+            return 0
+        return (self.clicks / self.impressions) * 100
+
+    def __str__(self):
+        return f"{self.post.title} - Impressions: {self.impressions}, Clicks: {self.clicks}, CTR: {self.ctr():.2f}%"

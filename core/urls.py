@@ -8,6 +8,7 @@ from .views import ApiGeneralView
 
 urlpatterns = [
     path('api/blog/', include('apps.blog.urls')),
+    path("api/curriculum/", include('apps.curriculum.urls')),
     path('admin/', admin.site.urls),
     path("ckeditor5/", include('django_ckeditor_5.urls')),
 ]+static(settings.STATIC_URL, document_root=settings.STATIC_ROOT)

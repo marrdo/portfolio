@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from .models import Post, Category, Heading, PostView
+from .models import Post, Category, Heading, PostView, PostAnalytics
+
 class CategorySerializer(serializers.ModelSerializer):
     """
     Serializador para el modelo `Category`.
@@ -64,13 +65,21 @@ class PostSerializer(serializers.ModelSerializer):
     category = CategorySerializer()
     headings = HeadingSerializer(many = True) #Many = true porque podemos tener muchos headings
     view_count = serializers.SerializerMethodField()
-    
+    meta_description = serializers.CharField()
+    og_title = serializers.CharField(allow_null=True)
+    og_description = serializers.CharField(allow_null=True)
+    og_image = serializers.ImageField(allow_null=True)
+    twitter_title = serializers.CharField(allow_null=True)
+    twitter_description = serializers.CharField(allow_null=True)
+    twitter_image = serializers.ImageField(allow_null=True)
     class Meta:
         """Define el modelo a serializar y los campos incluidos."""
         model = Post
         fields = [
             "id", "title", "description", "content", "thumbnail", "keywords",
-            "slug", "category", "created_at", "update_at", "status", "headings", "view_count"
+            "slug", "category", "created_at", "update_at", "status", "headings", "view_count",
+            "meta_description", "og_title", "og_description", "og_image",
+            "twitter_title", "twitter_description", "twitter_image"
         ]
     def get_view_count(self, obj):
         return obj.post_view.count()
@@ -91,3 +100,14 @@ class PostListSerializer(serializers.ModelSerializer):
     def get_view_count(self, obj):
         return obj.post_view.count()
 
+
+
+class PostAnalyticsSerializer(serializers.ModelSerializer):
+    ctr = serializers.SerializerMethodField()
+
+    class Meta:
+        model = PostAnalytics
+        fields = ["post", "impressions", "clicks", "ctr"]
+
+    def get_ctr(self, obj):
+        return obj.ctr()

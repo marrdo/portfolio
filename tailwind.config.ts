@@ -1,7 +1,7 @@
 import type { Config } from "tailwindcss";
 
 export default {
-  darkMode: "class", // Permite activar el modo oscuro con una clase
+  darkMode: "class", // Activa el modo oscuro con una clase
   content: [
     "./src/pages/**/*.{js,ts,jsx,tsx,mdx}",
     "./src/components/**/*.{js,ts,jsx,tsx,mdx}",
@@ -10,8 +10,11 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: "var(--color-primary)", // Verde Neón Hack The Box
-        secondary: "var(--color-secondary)", // Gris oscuro
+        primary: "#FF6600", // Color principal (Naranja fuerte)
+        lightAccent: "#136f63", // Verde oscuro
+        lightShades: "#000f08", // Negro profundo
+        darkAccent: "#e0ca3c", // Amarillo mostaza
+        darkShades: "#3e2f5b", // Púrpura oscuro
         background: {
           light: "var(--color-background-light)",
           dark: "var(--color-background-dark)",

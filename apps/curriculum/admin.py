@@ -8,7 +8,7 @@ class PerfilAdmin(admin.ModelAdmin):
     list_filter = ('fecha_nacimiento', 'nombre', 'dni')
     ordering = ('-dni',)  # Aseguramos que ordering sea una tupla
     list_editable = ('apellido_2', 'telefono')
-
+    prepopulated_fields = {'slug': ('nombre', 'apellido_1',)}
     fieldsets = (
         ('Información Personal', {
             'fields': ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento')
@@ -34,6 +34,7 @@ class HabilidadAdmin(admin.ModelAdmin):
     list_filter = ('nombre',)  
     ordering = ('nombre',)  
     readonly_fields = ('created_at', 'modified_at')
+    prepopulated_fields = {'slug': ('nombre',)}
     fieldsets = (
         ('Información General', {
             'fields': ('nombre', 'perfil', 'slug')
@@ -56,7 +57,7 @@ class ProyectoAdmin(admin.ModelAdmin):
     date_hierarchy = 'created_at'
     readonly_fields = ('created_at', 'modified_at')
     filter_horizontal = ('habilidades',)  
-
+    prepopulated_fields = {'slug': ('nombre',)}
     fieldsets = (
         ('Detalles del Proyecto', {
             'fields': ('nombre', 'slug', 'title', 'perfil', 'descripcion', 'texto_enriquecido', 'habilidades')
@@ -90,7 +91,7 @@ class ExperienciaAdmin(admin.ModelAdmin):
     search_fields = ('puesto', 'empresa__nombre', 'perfil__nombre')
     ordering = ('-fecha_inicio',)
     readonly_fields = ('created_at', 'modified_at')
-
+    prepopulated_fields = {'slug': ('puesto', 'empresa',)}
     fieldsets = (
         ('Datos de la Experiencia', {
             "fields": ('perfil', 'empresa', 'puesto', 'slug', 'descripcion')
@@ -104,7 +105,8 @@ class ExperienciaAdmin(admin.ModelAdmin):
 class EducacionAdmin(admin.ModelAdmin):
     list_display = ('institucion', 'titulo', 'perfil', 'fecha_inicio', 'fecha_fin')
     search_fields = ('titulo',)
-    ordering = ('-fecha_inicio',)  
+    ordering = ('-fecha_inicio',)
+    prepopulated_fields = {'slug': ('titulo',)}
     fieldsets = (
         ('Información de titulación', {
             'fields': ('institucion', 'titulo', 'perfil', 'descripcion')

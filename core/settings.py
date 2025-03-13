@@ -73,7 +73,7 @@ customColorPalette = [
     },
 ]
 
-CKEDITOR_5_CUSTOM_CSS = 'path_to.css' # optional
+CKEDITOR_5_CUSTOM_CSS = '/media/assets/css/ckEditor5.css'
 CKEDITOR_5_FILE_STORAGE = "django.core.files.storage.FileSystemStorage" # optional
 CKEDITOR_5_CONFIGS = {
     'default': {
@@ -132,6 +132,26 @@ CKEDITOR_5_CONFIGS = {
                 { 'model': 'heading2', 'view': 'h2', 'title': 'Heading 2', 'class': 'ck-heading_heading2' },
                 { 'model': 'heading3', 'view': 'h3', 'title': 'Heading 3', 'class': 'ck-heading_heading3' }
             ]
+        },
+        'fontColor': {
+            'colors': [
+                {
+                    'color': '#000000',
+                    'label': 'Negro'
+                }
+            ],
+            'columns': 5,
+            'documentColors': 10
+        },
+        'fontBackgroundColor': {
+            'colors': [
+                {
+                    'color': '#FFFFFF',
+                    'label': 'Blanco'
+                }
+            ],
+            'columns': 5,
+            'documentColors': 10
         }
     },
     'list': {

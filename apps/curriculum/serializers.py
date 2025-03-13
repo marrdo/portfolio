@@ -18,7 +18,7 @@ class EducacionSerializer(serializers.ModelSerializer):
 
 class ExperienciaSerializer(serializers.ModelSerializer):
     empresa = EmpresaSerializer()  # Una experiencia está relacionada con una única empresa
-
+    habilidades = HabilidadSerializer(many=True)
     class Meta:
         model = Experiencia
         fields = "__all__"

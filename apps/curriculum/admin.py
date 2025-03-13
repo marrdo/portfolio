@@ -11,7 +11,7 @@ class PerfilAdmin(admin.ModelAdmin):
     prepopulated_fields = {'slug': ('nombre', 'apellido_1',)}
     fieldsets = (
         ('Información Personal', {
-            'fields': ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento')
+            'fields': ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento', 'slug')
         }),
         ('Redes Sociales', {
             'fields': ('linkedin', 'facebook', 'twitter', 'instagram', 'github', 'web_personal')
@@ -87,29 +87,31 @@ class EmpresaAdmin(admin.ModelAdmin):
 
 @admin.register(Experiencia)
 class ExperienciaAdmin(admin.ModelAdmin):
-    list_display = ('perfil', 'empresa', 'puesto', 'fecha_inicio', 'fecha_fin', 'created_at', 'modified_at')
-    search_fields = ('puesto', 'empresa__nombre', 'perfil__nombre')
-    ordering = ('-fecha_inicio',)
-    readonly_fields = ('created_at', 'modified_at')
-    prepopulated_fields = {'slug': ('puesto', 'empresa',)}
+    list_display = ("perfil", "empresa", "puesto", "fecha_inicio", "fecha_fin", "created_at", "modified_at")
+    search_fields = ("puesto", "empresa__nombre", "perfil__nombre")
+    ordering = ("-fecha_inicio",)
+    readonly_fields = ("created_at", "modified_at")
+    prepopulated_fields = {"slug": ("puesto", "empresa")}
+    filter_horizontal = ("habilidades",)  
+
     fieldsets = (
-        ('Datos de la Experiencia', {
-            "fields": ('perfil', 'empresa', 'puesto', 'slug', 'descripcion')
-        }), 
-        ('Fechas', { 
-            "fields": ('fecha_inicio', 'fecha_fin', 'created_at', 'modified_at')
+        ("Datos de la Experiencia", {
+            "fields": ("perfil", "empresa", "puesto", "slug", "descripcion", "habilidades")
+        }),
+        ("Fechas", {
+            "fields": ("fecha_inicio", "fecha_fin", "created_at", "modified_at")
         }),
     )
 
 @admin.register(Educacion)
 class EducacionAdmin(admin.ModelAdmin):
-    list_display = ('institucion', 'titulo', 'perfil', 'fecha_inicio', 'fecha_fin')
+    list_display = ('institucion', 'titulo', 'perfil', 'fecha_inicio', 'fecha_fin',)
     search_fields = ('titulo',)
     ordering = ('-fecha_inicio',)
     prepopulated_fields = {'slug': ('titulo',)}
     fieldsets = (
         ('Información de titulación', {
-            'fields': ('institucion', 'titulo', 'perfil', 'descripcion')
+            'fields': ('institucion', 'titulo', 'perfil', 'descripcion', 'slug')
         }),
         ('Imágenes de títulos', {
             'fields': ('thumbnail_titulo',),

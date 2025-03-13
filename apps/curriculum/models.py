@@ -279,6 +279,7 @@ class Experiencia(models.Model):
     slug = models.SlugField(_("Slug"), unique=True, max_length=128)
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="experiencias")
     empresa = models.ForeignKey(Empresa, on_delete=models.CASCADE, related_name='experiencias')
+    habilidades = models.ManyToManyField(Habilidad, related_name="experiencias", blank=True)
     puesto = models.CharField(_("Puesto"), max_length=100)
     fecha_inicio = models.DateField(_("Fecha de inicio"))
     fecha_fin = models.DateField(_("Fecha de finalización"), blank=True, null=True)
@@ -331,7 +332,7 @@ class Educacion(models.Model):
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="titulaciones")
     fecha_inicio = models.DateField(_("Fecha de inicio"))
     fecha_fin = models.DateField(_("Fecha de finalización"), blank=True, null=True) #Si fecha fin es null, es el puesto actual.
-    descripcion = CKEditor5Field(_("Descripción"), config_name="extends")
+    descripcion = CKEditor5Field(_("Descripción"), config_name="extends", blank=True, null=True)
     thumbnail_titulo = models.ImageField(_("Imagen del título"), upload_to=upload_to_titulo, blank=True, null=True)
     created_at = models.DateTimeField(_("Creado en"), auto_now_add=True)
     modified_at = models.DateTimeField(_("Modificado en"), auto_now=True)

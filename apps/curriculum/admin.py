@@ -3,7 +3,7 @@ from .models import Perfil, Habilidad, Proyecto, Empresa, Experiencia, Educacion
 
 @admin.register(Perfil)
 class PerfilAdmin(admin.ModelAdmin):
-    list_display = ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento')  
+    list_display = ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento')
     search_fields = ('dni', 'nombre', 'apellido_1', 'email')
     list_filter = ('fecha_nacimiento', 'nombre', 'dni')
     ordering = ('-dni',)  # Aseguramos que ordering sea una tupla
@@ -12,6 +12,10 @@ class PerfilAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Información Personal', {
             'fields': ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento', 'slug')
+        }),
+        ('SEO', {
+            'fields': ('canonical_url', 'meta_description', 'og_title', 'og_description', 'og_image'),
+            'classes': ('collapse',),
         }),
         ('Redes Sociales', {
             'fields': ('linkedin', 'facebook', 'twitter', 'instagram', 'github', 'web_personal')
@@ -24,8 +28,7 @@ class PerfilAdmin(admin.ModelAdmin):
         }),
     )
 
-    readonly_fields = ('created_at', 'modified_at')  # Evitar edición manual en fechas
-
+    readonly_fields = ('created_at', 'modified_at')   # Evitar edición manual en fechas
 
 @admin.register(Habilidad)
 class HabilidadAdmin(admin.ModelAdmin):
@@ -61,6 +64,10 @@ class ProyectoAdmin(admin.ModelAdmin):
     fieldsets = (
         ('Detalles del Proyecto', {
             'fields': ('nombre', 'slug', 'title', 'perfil', 'descripcion', 'texto_enriquecido', 'habilidades')
+        }),
+        ('SEO', {
+            'fields': ('canonical_url', 'meta_description', 'og_title', 'og_description', 'og_image'),
+            'classes': ('collapse',),  # Para que los meta campos estén colapsados por defecto
         }),
         ('Imágenes', {
             'fields': ('thumbnail', 'tiny'),

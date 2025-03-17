@@ -214,10 +214,10 @@ class Proyecto(BaseSEO, models.Model):
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="proyectos")
     url_proyecto = models.URLField(_("URL del proyecto"), max_length=200, blank=True, null=True)
     url_proyecto_demo = models.URLField(_("URL demo del proeycto"), max_length=200, blank=True, null=True)
-    thumbnail = models.ImageField(_("Imagen de habilidad"), upload_to=upload_to_proyecto, blank=True, null=True)
-    tiny = models.ImageField(_("Imagen de habilidad para móvil"), upload_to=upload_to_proyecto, blank=True, null=True)
+    thumbnail = models.ImageField(_("Imagen de proyecto"), upload_to=upload_to_proyecto, blank=True, null=True)
+    tiny = models.ImageField(_("Imagen de proyecto para móvil"), upload_to=upload_to_proyecto, blank=True, null=True)
     descripcion = CKEditor5Field(_('Descripción'), config_name='extends')#Esto se podria usar para hacer una vista detallada de cada proyecto.
-    texto_enriquecido = CKEditor5Field(_('Texto enriquecido'), config_name='extends')
+    texto_enriquecido = CKEditor5Field(_('Texto enriquecido'), config_name='extends', null=True, blank=True)
     habilidades = models.ManyToManyField("Habilidad", verbose_name=_("Habilidades"))
     created_at = models.DateTimeField(_("Creado en"), auto_now_add=True)
     modified_at = models.DateTimeField(_("Modificado en"), auto_now=True)

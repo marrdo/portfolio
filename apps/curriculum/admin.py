@@ -14,7 +14,7 @@ class PerfilAdmin(admin.ModelAdmin):
             'fields': ('dni', 'nombre', 'apellido_1', 'apellido_2', 'email', 'telefono', 'fecha_nacimiento', 'slug')
         }),
         ('SEO', {
-            'fields': ('canonical_url', 'meta_description', 'og_title', 'og_description', 'og_image'),
+            'fields': ('url_canonical', 'meta_description', 'og_title', 'og_description', 'og_image'),
             'classes': ('collapse',),
         }),
         ('Redes Sociales', {
@@ -66,7 +66,7 @@ class ProyectoAdmin(admin.ModelAdmin):
             'fields': ('nombre', 'slug', 'title', 'perfil', 'descripcion', 'texto_enriquecido', 'habilidades')
         }),
         ('SEO', {
-            'fields': ('canonical_url', 'meta_description', 'og_title', 'og_description', 'og_image'),
+            'fields': ('url_canonical', 'meta_description', 'og_title', 'og_description', 'og_image'),
             'classes': ('collapse',),  # Para que los meta campos estén colapsados por defecto
         }),
         ('Imágenes', {

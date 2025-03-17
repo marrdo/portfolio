@@ -60,7 +60,7 @@ class BaseSEO(models.Model):
     Esta clase es abstracta y debe ser heredada por otros modelos que necesiten SEO.
     """
     url_canonical = models.URLField(_('URL canonical'), max_length=200)
-    mmeta_description = models.CharField(max_length=255, null=True, blank=True)
+    meta_description = models.CharField(max_length=255, null=True, blank=True)
     og_title = models.CharField(max_length=256, blank=True, null=True)
     og_description = models.CharField(max_length=256, blank=True, null=True)
     og_image = models.ImageField(upload_to=upload_to_seo, blank=True, null=True)
@@ -213,7 +213,7 @@ class Proyecto(BaseSEO, models.Model):
     title = models.CharField(max_length=128, blank=True, null=True)
     perfil = models.ForeignKey(Perfil, on_delete=models.CASCADE, related_name="proyectos")
     url_proyecto = models.URLField(_("URL del proyecto"), max_length=200, blank=True, null=True)
-    url_proyecto_demo = models.URLField(_("URL demo del proeycto"), max_length=200, blank=True, null=True)
+    url_proyecto_demo = models.URLField(_("URL demo del proyecto"), max_length=200, blank=True, null=True)
     thumbnail = models.ImageField(_("Imagen de proyecto"), upload_to=upload_to_proyecto, blank=True, null=True)
     tiny = models.ImageField(_("Imagen de proyecto para móvil"), upload_to=upload_to_proyecto, blank=True, null=True)
     descripcion = CKEditor5Field(_('Descripción'), config_name='extends')#Esto se podria usar para hacer una vista detallada de cada proyecto.

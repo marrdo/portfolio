@@ -59,7 +59,7 @@ class BaseSEO(models.Model):
 
     Esta clase es abstracta y debe ser heredada por otros modelos que necesiten SEO.
     """
-    url_canonical = models.URLField(_('URL canonical'), max_length=200)
+    url_canonical = models.URLField(_('URL canonical'), max_length=200, null=True, blank=True)
     meta_description = models.CharField(max_length=255, null=True, blank=True)
     og_title = models.CharField(max_length=256, blank=True, null=True)
     og_description = models.CharField(max_length=256, blank=True, null=True)

@@ -1,0 +1,29 @@
+---
+import { ViewTransitions } from "astro:transitions";
+import Navbar from "../components/Navbar.astro";
+import Footer from "../components/Footer.astro";
+// import ThemeToggle from "../components/ThemeToggle.astro"; // ¡verifica que tenga extensión!
+
+interface Props {
+  title: string;
+  description?: string;
+}
+
+const { title, description = "A web developer portfolio" } = Astro.props;
+---
+
+<html lang="en">
+  <head>
+    <title>{title}</title>
+    <meta name="description" content={description} />
+  </head>
+  <body>
+    <ViewTransitions>
+      <Navbar />
+      <main>
+        <slot />
+      </main>
+      <Footer />
+    </ViewTransitions>
+  </body>
+</html>

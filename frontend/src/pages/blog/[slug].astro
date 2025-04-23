@@ -1,0 +1,16 @@
+import MainLayout from "../../layouts/MainLayout.astro"
+import BlogPost from "../../components/BlogPost"
+
+export async function getStaticPaths() {
+  // In a real implementation, this would fetch from the API
+  // For now, we'll return a hardcoded list of blog posts
+  return [
+    { params: { slug: "building-secure-authentication" } },
+    { params: { slug: "future-web-development-react-astro" } },
+    { params: { slug: "zero-trust-security-web-apps" } },
+    { params: { slug: "optimizing-django-rest-framework" } },
+    { params: { slug: "accessible-web-apps-react" } },
+  ]
+}
+
+const { slug } = Astro.params

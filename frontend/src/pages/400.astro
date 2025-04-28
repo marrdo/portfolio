@@ -3,15 +3,15 @@ import MainLayout from '../layouts/MainLayout.astro';
 ---
 
 <MainLayout 
-  title="500 - Server Error | DevHacker Portfolio"
-  description="Something went wrong on our server."
+  title="400 - Bad Request | DevHacker Portfolio"
+  description="The server cannot process your request."
 >
   <div class="flex flex-col items-center justify-center min-h-[60vh] py-16 px-4 text-center">
     <div class="mb-8">
-      <div class="text-9xl font-bold text-primary font-mono">500</div>
-      <div class="text-2xl md:text-3xl font-bold mt-4">Server Error</div>
+      <div class="text-9xl font-bold text-primary font-mono">400</div>
+      <div class="text-2xl md:text-3xl font-bold mt-4">Bad Request</div>
       <p class="text-gray-400 mt-2 max-w-md mx-auto">
-        Something went wrong on our server. We're working to fix the problem.
+        The server cannot process your request due to malformed syntax.
       </p>
     </div>
     
@@ -26,10 +26,10 @@ import MainLayout from '../layouts/MainLayout.astro';
       <div class="p-4 border border-gray-800 rounded-lg bg-gray-900/50">
         <div class="font-mono text-sm text-gray-400">
           <div class="mb-2 text-primary">> ERROR_LOG:</div>
-          <div class="glitch-text">
-            <span class="text-darkAccent">></span> System malfunction detected<br>
-            <span class="text-darkAccent">></span> Attempting to recover data...<br>
-            <span class="text-darkAccent">></span> Server resources overloaded<br>
+          <div>
+            <span class="text-darkAccent">></span> Invalid request parameters<br>
+            <span class="text-darkAccent">></span> Syntax error in request<br>
+            <span class="text-darkAccent">></span> Please check your input and try again<br>
             <span class="text-darkAccent">></span> <span class="animate-pulse">_</span>
           </div>
         </div>
@@ -37,34 +37,3 @@ import MainLayout from '../layouts/MainLayout.astro';
     </div>
   </div>
 </MainLayout>
-
-<style>
-  .glitch-text {
-    position: relative;
-    animation: glitch 1s linear infinite alternate;
-  }
-  
-  @keyframes glitch {
-    0% {
-      transform: skew(0deg);
-    }
-    20% {
-      transform: skew(0deg);
-    }
-    21% {
-      transform: skew(10deg);
-    }
-    23% {
-      transform: skew(0deg);
-    }
-    25% {
-      transform: skew(-5deg);
-    }
-    30% {
-      transform: skew(0deg);
-    }
-    100% {
-      transform: skew(0deg);
-    }
-  }
-</style>

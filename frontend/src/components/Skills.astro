@@ -1,0 +1,127 @@
+---
+import { getSkills } from '../lib/api'
+
+interface Skill {
+  name: string
+  level: number
+  category: string
+}
+
+let skillsData: Skill[] = []
+let error: string | null = null
+
+try {
+  skillsData = await getSkills()
+} catch (err) {
+  console.error('Failed to fetch skills:', err)
+  error = 'Failed to load skills. Please try again later.'
+}
+
+const groupedSkills: Record<string, Skill[]> = {}
+for (const skill of skillsData) {
+  if (!groupedSkills[skill.category]) {
+    groupedSkills[skill.category] = []
+  }
+  groupedSkills[skill.category].push(skill)
+}
+
+const categories = Object.keys(groupedSkills)
+---
+
+{error ? (
+  <div class="text-center py-10">
+    <h3 class="text-xl font-bold mb-4">Oops! Something went wrong</h3>
+    <p class="text-muted-foreground mb-6">{error}</p>
+    <form method="GET">
+      <button
+        type="submit"
+        class="bg-primary hover:bg-primary/90 text-background px-4 py-2 rounded-md flex items-center gap-2 mx-auto"
+      >
+        <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582M20 20v-5h-.581M5.11 5.11a9 9 0 0113.78 0M5.11 18.89a9 9 0 0113.78-13.78" />
+        </svg>
+        Retry
+      </button>
+    </form>
+  </div>
+) : categories.length === 0 ? (
+  <div class="text-center py-10">
+    <p class="text-muted-foreground">No skills found. Check back soon!</p>
+  </div>
+) : (
+  <div class="max-w-3xl mx-auto">
+    <div class="tabs">
+      <div class="grid w-full grid-cols-3 bg-background/50 border border-primary/20 mb-4">
+        {categories.map(category => (
+          <button
+            class="tab-trigger capitalize px-3 py-2 text-sm font-medium"
+            data-tab={category}
+            data-active="false"
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {categories.map(category => (
+        <div class="tab-content hidden" id={category}>
+          <div class="rounded-lg border bg-card/50 border-primary/20 shadow-sm">
+            <div class="p-6">
+              <div class="grid gap-6">
+                {groupedSkills[category].map(skill => (
+                  <div>
+                    <div class="flex justify-between mb-1">
+                      <span>{skill.name}</span>
+                      <span class="text-primary">{skill.level}%</span>
+                    </div>
+                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                      <div
+                        class="h-full bg-primary rounded-full transition-all duration-1000"
+                        style={`width: ${skill.level}%`}
+                      ></div>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+)}
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const triggers = document.querySelectorAll('.tab-trigger')
+    const contents = document.querySelectorAll('.tab-content')
+
+    function switchTab(category) {
+      contents.forEach(content => {
+        content.classList.add('hidden')
+      })
+
+      triggers.forEach(trigger => {
+        trigger.dataset.active = 'false'
+      })
+
+      const activeContent = document.getElementById(category)
+      const activeTrigger = document.querySelector(`.tab-trigger[data-tab="${category}"]`)
+
+      if (activeContent && activeTrigger) {
+        activeContent.classList.remove('hidden')
+        activeTrigger.dataset.active = 'true'
+        activeTrigger.classList.add('bg-primary', 'text-background')
+      }
+    }
+
+    const firstTab = triggers[0]?.dataset.tab
+    if (firstTab) switchTab(firstTab)
+
+    triggers.forEach(trigger => {
+      trigger.addEventListener('click', () => {
+        switchTab(trigger.dataset.tab)
+      })
+    })
+  })
+</script>

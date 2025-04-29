@@ -1,47 +1,58 @@
 ---
 import ThemeToggle from './ThemeToggle.astro';
 
-// Get the current URL path to highlight the active link
+// src/components/Navbar.astro
 const currentPath = Astro.url.pathname;
-
-const navItems = [
-  { href: '/', label: 'Home' },
-  { href: '/projects', label: 'Projects' },
-  { href: '/blog', label: 'Blog' },
-];
-
-// Function to check if a nav item is active
-const isActive = (href) => {
-  if (href === '/') {
-    return Astro.url.pathname === '/';
-  }
-  return Astro.url.pathname.startsWith(href);
-};
 ---
 
-<header class="border-b border-gray-800 dark:border-gray-700 py-4">
-  <div class="container mx-auto px-4 sm:px-6 flex justify-between items-center">
-    <a href="/" class="text-2xl font-mono font-bold text-primary hover:text-darkAccent transition-colors">
-      <span class="inline-block transform hover:scale-105 transition-transform">
-        &lt;/&gt; <span class="hidden sm:inline">DevHacker</span>
-      </span>
-    </a>
-    
-    <nav class="flex items-center space-x-1 sm:space-x-4">
-      {navItems.map(item => (
-        <a 
-          href={item.href} 
-          class={`
-            px-3 py-2 rounded-md text-sm font-medium transition-colors duration-200
-            ${isActive(item.href) 
-              ? 'text-primary border-b-2 border-primary' 
-              : 'text-gray-300 hover:text-primary hover:bg-gray-900/30'}
-          `}
-        >
-          {item.label}
-        </a>
-      ))}
-      <ThemeToggle />
+<header class="sticky top-0 z-50 w-full border-b border-primary/20 bg-background/80 backdrop-blur-sm">
+  <div class="container flex h-16 items-center justify-between">
+    <div class="flex items-center gap-2">
+      <!-- Ícono Terminal -->
+      <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6 text-primary" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+        <!-- SVG del ícono Terminal -->
+      </svg>
+      <a href="/" class="text-xl font-bold">
+        DEV<span class="text-primary">/</span>PORTFOLIO
+      </a>
+    </div>
+
+    <nav class="hidden md:flex items-center gap-6">
+      <a href="/" class={`text-sm font-medium transition-colors ${currentPath === '/' ? 'text-primary' : 'hover:text-primary'}`}>
+        Home
+      </a>
+      <a href="/projects" class={`text-sm font-medium transition-colors ${currentPath === '/projects' ? 'text-primary' : 'hover:text-primary'}`}>
+        Projects
+      </a>
+      <a href="/blog" class={`text-sm font-medium transition-colors ${currentPath === '/blog' ? 'text-primary' : 'hover:text-primary'}`}>
+        Blog
+      </a>
+      <a href="#contact" class="text-sm font-medium hover:text-primary transition-colors" on:click="scrollToContact(event)">
+        Contact
+      </a>
+      <a href="/resume.pdf" class="border border-primary text-primary hover:bg-primary hover:text-background px-4 py-2 rounded">
+        Resume
+      </a>
+      <!-- Botón de cambio de tema (implementación adicional) -->
     </nav>
+
+    <div class="flex items-center gap-2">
+      <!-- Botón de cambio de tema (implementación adicional) -->
+      <ThemeToggle />
+    </div>
   </div>
+
+  <!-- Menú móvil (implementación adicional) -->
 </header>
+
+<script>
+  function scrollToContact(event) {
+    event.preventDefault();
+    const contactSection = document.getElementById("contact");
+    if (contactSection && location.pathname === "/") {
+      contactSection.scrollIntoView({ behavior: "smooth" });
+    } else {
+      window.location.href = "/#contact";
+    }
+  }
+</script>

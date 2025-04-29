@@ -1,0 +1,29 @@
+---
+// Props: ratio (por ejemplo, "16:9")
+const { ratio = '16:9' } = Astro.props;
+const [width, height] = ratio.split(':').map(Number);
+const paddingBottom = (height / width) * 100;
+---
+<style>
+  .aspect-ratio {
+    position: relative;
+    width: 100%;
+    padding-bottom: var(--padding-bottom);
+  }
+  .aspect-ratio > * {
+    position: absolute;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    left: 0;
+  }
+</style>
+
+<div class="aspect-ratio" style="--padding-bottom: {paddingBottom}%;">
+  <slot />
+</div>
+<!-- USO
+<AspectRatio ratio="16:9">
+    <img src="/ruta/a/imagen.jpg" alt="Descripción de la imagen" />
+  </AspectRatio> -->
+  

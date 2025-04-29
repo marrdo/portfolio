@@ -1,0 +1,73 @@
+---
+// src/components/AboutSection.astro
+---
+<section id="about" class="py-20 relative">
+    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,97,0,0.1),transparent_70%)]"></div>
+    <div class="container relative z-10">
+      <div class="flex flex-col md:flex-row gap-12 items-center">
+        <div class="md:w-1/2">
+          <div class="relative">
+            <div class="aspect-square w-full max-w-md mx-auto overflow-hidden rounded-lg border-2 border-orange-500/50 bg-black/50">
+              <div class="absolute inset-0 flex items-center justify-center text-orange-500">
+                <!-- Ícono User -->
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <!-- SVG del ícono User -->
+                </svg>
+              </div>
+              <!-- Reemplaza con tu imagen real si lo deseas -->
+              <!-- <img src="/your-photo.jpg" alt="Tu Nombre" class="w-full h-full object-cover" /> -->
+            </div>
+            <div class="absolute -bottom-4 -right-4 w-32 h-32 border-2 border-orange-500/50 rounded-lg"></div>
+            <div class="absolute -top-4 -left-4 w-32 h-32 border-2 border-orange-500/50 rounded-lg"></div>
+          </div>
+        </div>
+  
+        <div class="md:w-1/2">
+          <h2 class="text-3xl font-bold mb-2">About Me</h2>
+          <div class="w-20 h-1 bg-orange-500 mb-6"></div>
+          <p class="text-gray-400 mb-6">
+            I'm a passionate web developer with a focus on creating secure, efficient, and user-friendly applications.
+            With expertise in both frontend and backend technologies, I bring a holistic approach to solving complex
+            problems.
+          </p>
+          <p class="text-gray-400 mb-8">
+            My background in cybersecurity gives me a unique perspective on building robust applications that not only
+            look great but are also built with security best practices in mind.
+          </p>
+  
+          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
+              <!-- Ícono Code -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <!-- SVG del ícono Code -->
+              </svg>
+              <span>Frontend Development</span>
+            </div>
+            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
+              <!-- Ícono Server -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <!-- SVG del ícono Server -->
+              </svg>
+              <span>Backend Development</span>
+            </div>
+            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
+              <!-- Ícono Globe -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <!-- SVG del ícono Globe -->
+              </svg>
+              <span>Web Security</span>
+            </div>
+            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
+              <!-- Ícono Terminal -->
+              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                <!-- SVG del ícono Terminal -->
+              </svg>
+              <span>DevOps</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
+  </section>
+  

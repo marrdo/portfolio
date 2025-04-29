@@ -1,0 +1,42 @@
+---
+// Props: variant (default | destructive)
+const { variant = 'default' } = Astro.props;
+const variantClass = variant === 'destructive' ? 'alert-destructive' : 'alert-default';
+---
+<style>
+  .alert {
+    position: relative;
+    padding: 1rem;
+    border-radius: 0.5rem;
+    border: 1px solid;
+    margin-bottom: 1rem;
+  }
+  .alert-default {
+    background-color: #f0f0f0;
+    color: #333;
+    border-color: #ccc;
+  }
+  .alert-destructive {
+    background-color: #ffe5e5;
+    color: #a00;
+    border-color: #f00;
+  }
+  .alert-title {
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+  }
+  .alert-description {
+    font-size: 0.9rem;
+  }
+</style>
+
+<div class="alert {variantClass}">
+  <div class="alert-title"><slot name="title" /></div>
+  <div class="alert-description"><slot name="description" /></div>
+</div>
+<!-- USO
+<Alert variant="destructive">
+    <div slot="title">Error</div>
+    <div slot="description">Ha ocurrido un error inesperado.</div>
+  </Alert> -->
+  

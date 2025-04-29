@@ -1,0 +1,60 @@
+---
+// No se requieren props para este ejemplo básico
+---
+<style>
+    .accordion-item {
+      border-bottom: 1px solid #ccc;
+    }
+    .accordion-trigger {
+      display: flex;
+      justify-content: space-between;
+      padding: 1rem;
+      cursor: pointer;
+      font-weight: 500;
+      transition: all 0.3s;
+    }
+    .accordion-trigger:hover {
+      text-decoration: underline;
+    }
+    .accordion-content {
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      max-height: 0;
+    }
+    .accordion-content.open {
+      max-height: 200px; /* Ajusta según el contenido */
+    }
+    .chevron {
+      transition: transform 0.3s;
+    }
+    .chevron.open {
+      transform: rotate(180deg);
+    }
+  </style>
+  
+  <div class="accordion-item">
+    <div class="accordion-trigger" onclick="toggleAccordion(this)">
+      <span><slot name="title" /></span>
+      <svg class="chevron" width="16" height="16" viewBox="0 0 24 24">
+        <path d="M6 9l6 6 6-6" stroke="currentColor" stroke-width="2" fill="none" />
+      </svg>
+    </div>
+    <div class="accordion-content">
+      <slot name="content" />
+    </div>
+  </div>
+  
+  <script>
+    function toggleAccordion(trigger) {
+      const content = trigger.nextElementSibling;
+      const chevron = trigger.querySelector('.chevron');
+      content.classList.toggle('open');
+      chevron.classList.toggle('open');
+    }
+  </script>
+  
+  <!-- USO
+  <Accordion>
+    <div slot="title">Título del Acordeón</div>
+    <div slot="content">Contenido del acordeón.</div>
+  </Accordion> -->

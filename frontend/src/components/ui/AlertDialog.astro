@@ -1,0 +1,66 @@
+---
+// No se requieren props para este ejemplo básico
+---
+<style>
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.8);
+      display: none;
+      justify-content: center;
+      align-items: center;
+    }
+    .overlay.open {
+      display: flex;
+    }
+    .dialog {
+      background: white;
+      padding: 2rem;
+      border-radius: 8px;
+      max-width: 500px;
+      width: 100%;
+    }
+    .dialog-header {
+      font-size: 1.25rem;
+      font-weight: bold;
+    }
+    .dialog-footer {
+      margin-top: 1rem;
+      text-align: right;
+    }
+    .button {
+      padding: 0.5rem 1rem;
+      margin-left: 0.5rem;
+    }
+  </style>
+  
+  <button onclick="openDialog()">Abrir Diálogo</button>
+  
+  <div class="overlay" id="alertDialog">
+    <div class="dialog">
+      <div class="dialog-header"><slot name="title" /></div>
+      <div class="dialog-content"><slot name="content" /></div>
+      <div class="dialog-footer">
+        <button class="button" onclick="closeDialog()">Cancelar</button>
+        <button class="button">Aceptar</button>
+      </div>
+    </div>
+  </div>
+  
+  <script>
+    function openDialog() {
+      document.getElementById('alertDialog')?.classList.add('open');
+    }
+    function closeDialog() {
+      document.getElementById('alertDialog')?.classList.remove('open');
+    }
+  </script>
+  <!-- USO
+  <AlertDialog>
+    <div slot="title">Confirmación</div>
+    <div slot="content">¿Estás seguro de continuar?</div>
+  </AlertDialog> -->
+  

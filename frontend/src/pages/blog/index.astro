@@ -9,7 +9,7 @@ const posts = [
     excerpt: 'Learn the best practices for creating secure web applications and protecting user data from common vulnerabilities like XSS and CSRF attacks.',
     date: 'April 15, 2023',
     slug: 'building-secure-web-applications',
-    image: '/placeholder.svg?height=400&width=600',
+    image: 'src/assets/images/logo.svg',
     imageAlt: 'Secure web application diagram',
     tags: ['Security', 'Web Development', 'Best Practices'],
   },
@@ -18,7 +18,7 @@ const posts = [
     excerpt: 'Exploring how artificial intelligence is transforming the landscape of cybersecurity, from threat detection to automated response systems.',
     date: 'March 22, 2023',
     slug: 'future-of-ai-in-cybersecurity',
-    image: '/placeholder.svg?height=400&width=600',
+    image: 'src/assets/images/logo.svg',
     imageAlt: 'AI cybersecurity concept',
     tags: ['AI', 'Cybersecurity', 'Machine Learning'],
   },
@@ -27,7 +27,7 @@ const posts = [
     excerpt: 'A comprehensive guide to building fast, content-focused websites with Astro, the modern static site generator that delivers lightning-fast performance.',
     date: 'February 10, 2023',
     slug: 'getting-started-with-astro',
-    image: '/placeholder.svg?height=400&width=600',
+    image: 'src/assets/images/logo.svg',
     imageAlt: 'Astro logo and code',
     tags: ['Astro', 'Web Development', 'Performance'],
   },
@@ -36,7 +36,7 @@ const posts = [
     excerpt: 'An in-depth look at the Zero Trust security model and how to implement it in your organization to improve your security posture.',
     date: 'January 5, 2023',
     slug: 'implementing-zero-trust-security',
-    image: '/placeholder.svg?height=400&width=600',
+    image: 'src/assets/images/logo.svg',
     imageAlt: 'Zero Trust security diagram',
     tags: ['Security', 'Zero Trust', 'Enterprise'],
   },
@@ -64,7 +64,7 @@ const posts = [
             <div class="md:w-1/3">
               <a href={`/blog/${post.slug}`}>
                 <img 
-                  src={post.image || "/placeholder.svg"} 
+                  src={post.image || "/assets/images/logo.svg"} 
                   alt={post.imageAlt} 
                   class="w-full h-full object-cover md:h-full"
                 />

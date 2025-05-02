@@ -3,45 +3,49 @@
 ---
 
 <section id="home" class="relative py-20 md:py-32 overflow-hidden">
-  <div class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,97,0,0.1),transparent_70%)]"></div>
+  <canvas id="logo-canvas" class="absolute inset-0 w-full h-full z-0"></canvas>
+  <section class="absolute inset-0 bg-[radial-gradient(circle_at_center,rgba(255,97,0,0.1),transparent_70%)]"></section>
   
-  <div class="container relative z-10 max-w-3xl mx-auto text-center">
-    <div class="inline-block px-3 py-1 mb-6 border border-primary/30 rounded-full bg-primary/10 text-primary text-sm">
-      Full-Stack Web Developer
-    </div>
+  <section class="container relative z-10 max-w-3xl mx-auto text-center backdrop-blur-xs">
+    <figure>
+      <figcaption class="inline-block px-3 py-1 mb-6 border border-primary/30 rounded-full bg-primary/10 text-primary text-sm">
+        Full-Stack Web Developer
+      </figcaption>
+    </figure>
 
     <h1 class="text-4xl md:text-6xl font-bold mb-6">
-      <span class="block mb-2">Hello, I'm [Your Name]</span>
+      <span class="block mb-2 dark:text-lightShades">Hola, soy Manuel</span>
       <span class="text-primary">
-        <span id="typing-text">I build exceptional web experiences.</span><span id="cursor" class="animate-blink">|</span>
+        <span id="typing-text">Desarrollador web Full-Stack.</span><span id="cursor" class="animate-blink">|</span>
       </span>
     </h1>
 
     <p class="text-muted-foreground mb-8 text-lg">
-      Crafting secure, performant, and beautiful web applications with modern technologies.
+      Desarrollo aplicaciones web modernas, rápidas y seguras combinando lo mejor del backend y frontend. Me especializo en JavaScript, PHP (CakePHP), HTML/CSS y Bootstrap, y actualmente exploro nuevas tecnologías como Astro y Django.
     </p>
 
     <div class="flex flex-col sm:flex-row gap-4 justify-center">
-      <a href="/projects" class="bg-primary hover:bg-primary/90 text-background py-2 px-4 rounded-lg flex items-center justify-center">
-        View My Work
+      <Button variant="default" size="default" href="/projects" class="border border-primary text-darkShades dark:text-lightShades hover:bg-darkAccent py-2 px-4 rounded-lg">
+        Ver proyectos
         <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5l7 7-7 7" />
         </svg>
-      </a>
+      </Button>
       
-      <!-- <a href="#contact" class="border border-primary text-primary hover:bg-primary hover:text-background py-2 px-4 rounded-lg flex items-center justify-center">
-        Contact Me
-      </a> -->
-      <Button variant="default" size="lg" href="#contact">
-        Contact Me
+      <Button variant="default" size="lg" href="#contact" class="border border-primary text-primary hover:bg-primary py-2 px-4 rounded-lg" fontSize="text-lg">
+        Contáctame
+        <svg xmlns="http://www.w3.org/2000/svg" class="ml-2 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2"
+            d="M16 12H8m0 0l4-4m-4 4l4 4m8 4H4a2 2 0 01-2-2V6a2 2 0 012-2h16a2 2 0 012 2v12a2 2 0 01-2 2z" />
+        </svg>
       </Button>
     </div>
-  </div>
+  </section>
 
   <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent"></div>
 
   <script type="module" is:inline>
-    const fullText = "I build exceptional web experiences.";
+    const fullText = "Desarrollador web Full-Stack.";
     const typingText = document.getElementById("typing-text");
     const cursor = document.getElementById("cursor");
     typingText.textContent = "";
@@ -61,4 +65,133 @@
       cursor.classList.toggle('opacity-0');
     }, 500);
   </script>
+  <script type="module" is:inline>
+    // Obtener el elemento <canvas> con id "logo-canvas"
+    const canvas = document.querySelector("#logo-canvas");
+
+    // Obtener el contexto 2D del canvas para poder dibujar
+    const ctx = canvas.getContext("2d");
+
+    // === FUNCIÓN PARA AJUSTAR EL TAMAÑO DEL CANVAS AL TAMAÑO DE LA VENTANA ===
+    function resizeCanvas() {
+        canvas.width = window.innerWidth;   // Ancho del canvas = ancho de la ventana
+        canvas.height = window.innerHeight; // Alto del canvas = alto de la ventana
+    }
+
+    // Llamamos a la función inmediatamente para ajustar el tamaño al cargar
+    resizeCanvas();
+
+    // Volver a ajustar el tamaño del canvas cuando el usuario redimensiona la ventana
+    window.addEventListener("resize", resizeCanvas);
+
+    // === RUTAS DE LAS IMÁGENES SVG DE LOS LOGOS ===
+    const logoSources = [
+        "img/logos/js-.svg",
+        "img/logos/python-.svg",
+        "img/logos/php-.svg",
+        "img/logos/html-.svg",
+        "img/logos/css-.svg",
+        "img/logos/tailwind-.svg",
+        "img/logos/bootstrap-.svg",
+        "img/logos/laravel-.svg",
+        "img/logos/cakephp-.svg",
+        "img/logos/django-.svg",
+        "img/logos/mysql-.svg",
+        "img/logos/astro-.svg"
+    ];
+
+    // Lista donde se guardarán los objetos Logo cargados
+    const logos = [];
+
+    // === CLASE QUE DEFINE CADA LOGO QUE SE MUEVE POR LA PANTALLA ===
+    class Logo {
+        constructor(img, x, y, vx, vy, size) {
+            this.img = img;   // Imagen del logo
+            this.x = x;       // Posición X
+            this.y = y;       // Posición Y
+            this.vx = vx;     // Velocidad en X
+            this.vy = vy;     // Velocidad en Y
+            this.size = size; // Tamaño (ancho y alto)
+        }
+
+        // Dibuja el logo en el canvas en su posición actual
+        draw() {
+            ctx.drawImage(this.img, this.x, this.y, this.size, this.size);
+        }
+
+        // Actualiza la posición del logo y rebota si choca con los bordes
+        update() {
+            this.x += this.vx;
+            this.y += this.vy;
+
+            // Rebote horizontal
+            if (this.x <= 0 || this.x + this.size >= canvas.width) this.vx *= -1;
+            // Rebote vertical
+            if (this.y <= 0 || this.y + this.size >= canvas.height) this.vy *= -1;
+        }
+    }
+
+    // === DETECCIÓN Y RESPUESTA SIMPLE A COLISIONES ENTRE LOGOS ===
+    function detectCollisions() {
+        for (let i = 0; i < logos.length; i++) {
+            for (let j = i + 1; j < logos.length; j++) {
+                const a = logos[i];
+                const b = logos[j];
+                const dx = a.x - b.x;
+                const dy = a.y - b.y;
+                const distance = Math.sqrt(dx * dx + dy * dy); // Distancia entre centros
+
+                // Si están superpuestos (choque), invertir sus velocidades
+                if (distance < a.size) {
+                    a.vx *= -1;
+                    a.vy *= -1;
+                    b.vx *= -1;
+                    b.vy *= -1;
+                }
+            }
+        }
+    }
+
+    // === CARGAR TODAS LAS IMÁGENES DE LOS LOGOS ===
+    Promise.all(logoSources.map(src => {
+        return new Promise(resolve => {
+            const img = new Image(); // Crear nueva imagen
+            img.src = src;           // Asignar ruta
+            img.onload = () => resolve(img); // Resolver cuando se haya cargado
+        });
+    })).then(images => {
+        // Una vez cargadas las imágenes...
+        for (let i = 0; i < 10; i++) {
+            const img = images[i % images.length]; // Rotar logos si hay menos de 10
+            const size = 40; // Tamaño fijo de los logos
+
+            // Crear nuevo Logo con posición y velocidad aleatorias
+            logos.push(new Logo(
+                img,
+                Math.random() * (canvas.width - size),     // Posición X aleatoria
+                Math.random() * (canvas.height - size),    // Posición Y aleatoria
+                (Math.random() - 0.5) * 2,  // Velocidad X entre -1 y 1
+                (Math.random() - 0.5) * 2,  // Velocidad Y entre -1 y 1
+                size
+            ));
+        }
+
+        // === FUNCIÓN DE ANIMACIÓN PRINCIPAL ===
+        function animate() {
+            ctx.clearRect(0, 0, canvas.width, canvas.height); // Limpiar canvas
+
+            for (const logo of logos) {
+                logo.update(); // Actualizar posición
+                logo.draw();   // Dibujar logo
+            }
+
+            detectCollisions(); // Detectar colisiones entre logos
+            requestAnimationFrame(animate); // Llamar de nuevo para animación continua
+        }
+
+        // Iniciar animación
+        animate();
+    });
+  </script>
+ 
 </section>

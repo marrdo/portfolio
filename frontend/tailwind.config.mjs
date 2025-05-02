@@ -6,15 +6,15 @@ export default {
   theme: {
     extend: {
       colors: {
-        primary: '#FF6600', // Bright orange
-        lightAccent: '#136f63', // Dark green
-        lightShades: '#000f08', // Deep black
-        darkAccent: '#e0ca3c', // Mustard yellow
-        darkShades: '#3e2f5b', // Deep purple
+        primary: '#ff6600', // Ecstasy | Este color debe ser llamativo, pero no estridente. Puede aplicarse generosamente al diseño como su identidad principal.
+        lightAccent: '#136f63', // Genoa | Los colores de acento se pueden utilizar para llamar la atención sobre los elementos de diseño contrastando con el resto de la paleta.
+        lightShades: '#f7f7f6', // Desert Storm |Utilice este color como fondo para sus diseños oscuros sobre claros, o como color de texto de un diseño invertido.
+        darkAccent: '#ad6640', // Brown Rust | Otro color de acento a considerar. No es necesario usar todos los colores; a veces, una paleta de colores sencilla funciona mejor.
+        darkShades: '#1f1d23', // Baltic Sea | Úselo como color de texto para diseños oscuros sobre claros o como fondo para diseños invertidos.
         
         // Light mode
         light: {
-          background: '#f8f9fa',
+          background: '#e7e3db',
           text: '#212529',
         },
         

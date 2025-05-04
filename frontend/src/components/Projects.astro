@@ -30,16 +30,16 @@ try {
 
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {proyectos.map((proyecto, index) => (
-        <div class="bg-black/50 border border-primary/50 overflow-hidden group rounded-xl">
-          <div class="relative overflow-hidden h-48">
-            <figure  class="transition-transform duration-500 group-hover:scale-110" >
+        <article class="border border-primary/50 overflow-hidden group rounded-xl card-proyecto">
+          <div class="relative overflow-hidden flex items-center justify-center bg-gray-500">
+            <figure  class="transition-transform duration-500 group-hover:scale-110 img-proyecto" >
               <picture>
                 <source srcset={proyecto.tiny} media="(max-width: 640px)" />
                 <source srcset={proyecto.thumbnail} media="(min-width: 640px)" />
                 <img src={proyecto.thumbnail} alt={proyecto.title} class="" />
               </picture>
             </figure>
-            <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-15"></div>
           </div>
           <div class="p-4">
             <div class="flex items-center gap-2 text-lg font-semibold mb-2">
@@ -70,7 +70,7 @@ try {
               </Button>
             </div>
           </div>
-        </div>
+        </article>
       ))}
     </section>
 

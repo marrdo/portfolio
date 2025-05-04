@@ -1,94 +1,122 @@
 ---
 // src/components/AboutSection.astro
-import Image from 'astro/components/Image.astro'
-import ImagenPeril from '../assets/images/profile.webp'
+import { Image } from 'astro:assets';
+import ImagenPeril from '../assets/images/profile.webp';
 ---
-<section id="about" class="py-20 relative">
-    <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,97,0,0.1),transparent_70%)]"></div>
-    <div class="container relative z-10">
-      <div class="flex flex-col md:flex-row gap-12 items-center">
-        <div class="md:w-1/2">
-          <div class="relative">
-            <div class="aspect-square w-full max-w-md mx-auto overflow-hidden rounded-lg border-2 border-orange-500/50 bg-black/50">
-              <figure>
-                <picture>
-                  <Image
-                    src={ImagenPeril}
-                    alt="Manuel Maldonado"
-                    class="w-full h-full object-cover"
-                    loading="lazy"></Image>
-                </picture>
-              </figure>
-            </div>
-            <div class="absolute -bottom-4 -right-4 w-32 h-32 border-2 border-orange-500/50 rounded-lg">
-              <figure class="absolute inset-0 text-orange-500">
-                <!-- Ícono User -->
-                <picture class="flex items-center justify-center ">
-                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FF6600" width="32" height="32">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
-                  </svg>
-                </picture>
-              </figure>
-            </div>
-            <div class="absolute -top-4 -left-4 w-32 h-32 border-2 border-orange-500/50 rounded-lg">
-              <figure class="absolute inset-0 flex items-center justify-center text-orange-500">
-                <picture class="flex items-center justify-center ">
-                  <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
-                  </svg>
-                </picture>
-              </figure>
-            </div>
+
+<section id="about" class="py-20 md:py-24 relative">
+  <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_right,rgba(255,97,0,0.1),transparent_70%)]"></div>
+  <div class="container mx-auto px-4 sm:px-6 relative z-10">
+    <div class="flex flex-col md:flex-row gap-16 items-center">
+      <!-- Image Column -->
+      <div class="md:w-1/2 flex justify-center">
+        <div class="relative w-full max-w-md">
+          <!-- Main Image Container -->
+          <div class="aspect-square w-full overflow-hidden rounded-lg border-2 border-orange-500/50 bg-black/50 shadow-lg">
+            <figure>
+              <picture>
+                <Image
+                  src={ImagenPeril || "/placeholder.svg"}
+                  alt="Manuel Maldonado"
+                  class="w-full h-full object-cover"
+                  loading="eager"
+                  width="600"
+                  height="600"
+                />
+              </picture>
+            </figure>
+          </div>
+
+          <!-- Bottom Right Decorative Element -->
+          <div class="absolute -bottom-6 -right-6 w-28 h-28 border-2 border-orange-500/50 rounded-lg bg-black/30 backdrop-blur-sm">
+            <figure class="absolute inset-0 text-orange-500">
+              <picture class="flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="#FF6600" width="32" height="32">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 6.75L22.5 12l-5.25 5.25m-10.5 0L1.5 12l5.25-5.25m7.5-3l-4.5 16.5" />
+                </svg>
+              </picture>
+            </figure>
+          </div>
+
+          <!-- Top Left Decorative Element -->
+          <div class="absolute -top-6 -left-6 w-28 h-28 border-2 border-orange-500/50 rounded-lg bg-black/30 backdrop-blur-sm">
+            <figure class="absolute inset-0 text-orange-500">
+              <picture class=" flex items-center justify-center">
+                <svg xmlns="http://www.w3.org/2000/svg" class="w-24 h-24" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M5.121 17.804A9 9 0 0112 15a9 9 0 016.879 2.804M15 11a3 3 0 11-6 0 3 3 0 016 0z" />
+                </svg>
+              </picture>
+            </figure>
           </div>
         </div>
-  
-        <div class="md:w-1/2">
-          <h2 class="text-3xl font-bold mb-2 text-darkShades  dark:text-lightShades">Sobre mí</h2>
-          <div class="w-20 h-1 bg-orange-500 mb-6"></div>
-          <p class="dark:text-gray-400 mb-6">
-            Soy desarrollador web Full-Stack junior con experiencia en proyectos reales y en producción. He <span class="font-bold">optimizado la eficiencia del código</span> aplicando el estándar PSR-12 de PHP y he <span class="font-bold">desarrollado una API</span> para conectar Blex —el principal proyecto en el que trabajo— con Get Your Guide, una reconocida plataforma internacional. Domino tecnologías como JavaScript, PHP (especialmente CakePHP), HTML/CSS y Bootstrap. Actualmente estoy ampliando mis conocimientos con Astro, Django y bases de datos PostgreSQL.
+      </div>
+
+      <!-- Content Column -->
+      <div class="md:w-1/2">
+        <h2 class="text-3xl md:text-4xl font-bold mb-3 text-darkShades dark:text-lightShades">Sobre mí</h2>
+        <div class="w-24 h-1.5 bg-orange-500 mb-8"></div>
+
+        <div class="space-y-6">
+          <p class="dark:text-gray-300 text-pretty">
+            Soy desarrollador web Full-Stack junior con experiencia en proyectos reales y en producción. He 
+            <span class="font-bold text-orange-500 dark:text-orange-400">optimizado la eficiencia del código</span> 
+            aplicando el estándar PSR-12 de PHP y he 
+            <span class="font-bold text-orange-500 dark:text-orange-400">desarrollado una API</span> 
+            para conectar Blex —el principal proyecto en el que trabajo— con Get Your Guide, una reconocida plataforma internacional. 
+            Domino tecnologías como JavaScript, PHP (especialmente CakePHP), HTML/CSS y Bootstrap. 
+            Actualmente estoy ampliando mis conocimientos con Astro, Django y bases de datos PostgreSQL.
           </p>
-          <p class="dark:text-gray-400 mb-8">
-            Me gusta escribir código limpio, reutilizable y fácil de mantener. Me enfoco en la seguridad, el rendimiento y la buena experiencia de usuario, tanto en el backend como en el frontend. Si buscas a alguien comprometido con la calidad y los detalles, estás en el lugar adecuado.
+
+          <p class="dark:text-gray-300 text-balance">
+            Me gusta escribir código limpio, reutilizable y fácil de mantener. Me enfoco en la seguridad, el rendimiento 
+            y la buena experiencia de usuario, tanto en el backend como en el frontend. Si buscas a alguien comprometido 
+            con la calidad y los detalles, estás en el lugar adecuado.
           </p>
-          
-          <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
-            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
-              <!-- Ícono Code -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <!-- SVG del ícono Code -->
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
-              </svg>
-              <span>Frontend Development</span>
-            </div>
-            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
-              <!-- Ícono Server -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <!-- SVG del ícono Server -->
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-              </svg>
-              <span>Backend Development</span>
-            </div>
-            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
-              <!-- Ícono Globe -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <!-- SVG del ícono Globe -->
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0c4.418 0 8 4.03 8 9s-3.582 9-8 9-8-4.03-8-9 3.582-9 8-9zm0 0c-2.485 0-4.5 4.03-4.5 9s2.015 9 4.5 9 4.5-4.03 4.5-9-2.015-9-4.5-9z" />
-              </svg>
-              <span>Web Security</span>
-            </div>
-            <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded">
-              <!-- Ícono Terminal -->
-              <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-5 w-5" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <!-- SVG del ícono Terminal -->
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17h16M7 7l3 3-3 3m5 0h4" />
-              </svg>
-              <span>DevOps</span>
-            </div>
+        </div>
+
+        <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-8">
+          <!-- Frontend Development -->
+          <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded-lg transition-all hover:border-orange-500/50 hover:shadow-md group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 18l6-6-6-6M8 6l-6 6 6 6" />
+            </svg>
+            <span class="text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+              Frontend Development
+            </span>
+          </div>
+
+          <!-- Backend Development -->
+          <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded-lg transition-all hover:border-orange-500/50 hover:shadow-md group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+            </svg>
+            <span class="text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+              Backend Development
+            </span>
+          </div>
+
+          <!-- Web Security -->
+          <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded-lg transition-all hover:border-orange-500/50 hover:shadow-md group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 2a10 10 0 100 20 10 10 0 000-20zm0 0c4.418 0 8 4.03 8 9s-3.582 9-8 9-8-4.03-8-9 3.582-9 8-9zm0 0c-2.485 0-4.5 4.03-4.5 9s2.015 9 4.5 9 4.5-4.03 4.5-9-2.015-9-4.5-9z" />
+            </svg>
+            <span class="text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+              Web Security
+            </span>
+          </div>
+
+          <!-- DevOps -->
+          <div class="bg-black/50 border border-orange-500/20 p-4 flex items-center gap-3 rounded-lg transition-all hover:border-orange-500/50 hover:shadow-md group">
+            <svg xmlns="http://www.w3.org/2000/svg" class="text-orange-500 h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 17h16M7 7l3 3-3 3m5 0h4" />
+            </svg>
+            <span class="text-gray-800 dark:text-gray-200 group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors">
+              DevOps
+            </span>
           </div>
         </div>
       </div>
     </div>
-    <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
-  </section>
-  
+  </div>
+  <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
+</section>

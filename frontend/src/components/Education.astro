@@ -1,0 +1,168 @@
+---
+import { getEducation } from "../lib/api";
+import Button from "./ui/Button.astro";
+
+interface EducacionEntry {
+  id: string;
+  slug: string;
+  institucion: string;
+  titulo: string;
+  descripcion: string;
+  fecha_inicio: string;
+  fecha_fin: string | null;
+  thumbnail_titulo: string | null;
+  perfil: string;
+}
+
+let educacionList: EducacionEntry[] = [];
+
+try {
+  educacionList = await getEducation();
+  // Ordenar por fecha_fin DESC (más reciente primero), si está en curso se considera como la más reciente
+  educacionList.sort((a, b) => {
+    const fechaA = a.fecha_fin ? new Date(a.fecha_fin).getTime() : Infinity;
+    const fechaB = b.fecha_fin ? new Date(b.fecha_fin).getTime() : Infinity;
+    return fechaB - fechaA;
+  });
+} catch (error) {
+  console.error("Error al cargar la educación:", error);
+}
+
+function formatDate(date: string | null): string {
+  if (!date) return "";
+  const d = new Date(date);
+  const formatted = d.toLocaleDateString("es-ES", {
+    year: "numeric",
+    month: "long",
+  });
+  return formatted.charAt(0).toUpperCase() + formatted.slice(1);
+}
+
+function estaEnCurso(entry: EducacionEntry): boolean {
+  return entry.fecha_fin === null;
+}
+
+function tieneContenidoDescripcion(html: string): boolean {
+  // Elimina todas las etiquetas HTML y espacios
+  const textoLimpio = html.replace(/<[^>]*>/g, "").trim();
+  // Si está vacío o solo contiene &nbsp; (espacio no separable), es falso
+  if (textoLimpio === "" || textoLimpio === "&nbsp;") {
+    return false;
+  }
+
+  return true;
+}
+
+---
+
+<section id="educacion" class="py-20 relative">
+  <h2 class="text-3xl font-bold mb-4 dark:text-lightShades text-darkShades">
+    Educación
+  </h2>
+  <div class="border-b-2 border-orange-500 mb-8 w-20"></div>
+
+  {
+    educacionList.length === 0 ? (
+      <p>No hay datos de educación disponibles.</p>
+    ) : (
+      <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+        {educacionList.map((edu, index) => (
+          <article class=" shadow p-6 transition-all hover:shadow-lg bg-black/50 border border-primary/20 overflow-hidden group rounded-xl">
+            <header class="mb-4">
+              <h3 class="text-xl font-semibold text-primary">{edu.titulo}</h3>
+              <p class="text-sm text-darkShades dark:text-lightShades">{edu.institucion}</p>
+            </header>
+
+            <article class="mb-4 text-sm ">
+              <span
+                class="px-2 py-1 rounded 
+              {estaEnCurso(edu) 
+                ? 'bg-yellow-800 text-yellow-200' 
+                : ''}"
+              >
+                {formatDate(edu.fecha_inicio)} —{" "}
+                {estaEnCurso(edu) ? "Actualidad" : formatDate(edu.fecha_fin)}
+              </span>
+            </article>
+
+            {edu.thumbnail_titulo && (
+              <article class="mb-4">
+                <Button
+                data-img={`titulo-img-${index}`} // <- así
+                size="sm"
+                variant="accent"
+                fontSize="text-sm"
+                >
+                Ver titulación
+                </Button>
+                <figure id={`titulo-img-${index}`} class="mt-4 oculta transicion">
+                    <picture>
+                        <img
+                        src={edu.thumbnail_titulo}
+                        alt={`Título de ${edu.titulo}`}
+                        class="max-w-full rounded shadow-md hover:scale-105 transition-transform"
+                        />
+                    </picture>
+                    <figcaption class="text-dark-codeBackground dark:text-light-background text-xs mt-2">
+                        Haz clic en la imagen para ampliar
+                    </figcaption>
+                </figure>
+              </article>
+            )}
+            {tieneContenidoDescripcion(edu.descripcion) && (
+            <>
+                <section class="mb-4">
+                    <Button
+                    size="sm"
+                    variant="accent"
+                    fontSize="text-sm"
+                    data-descripcion={`${edu.id}`}
+                    >
+                    Ver descripción
+                    </Button>
+                    <article
+                    id={`descripcion-${edu.id}`}
+                    class="text-sm leading-relaxed p-5 oculta transicion"
+                    set:html={edu.descripcion}
+                    />
+                </section>
+            </>
+            )}
+          </article>
+        ))}
+      </div>
+    )
+  }
+</section>
+<script>
+    document.addEventListener("DOMContentLoaded", () => {
+        // Mostrar imagen al hacer clic en "Ver titulación"
+        document.querySelectorAll("[data-img]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+            const targetId = btn.getAttribute("data-img");
+            const imgContainer = document.getElementById(targetId);
+            if (imgContainer) {
+                imgContainer.classList.toggle("oculta");
+            }
+            });
+        });
+  
+        // Abrir imagen en nueva pestaña al hacer clic
+        document.querySelectorAll("figure img").forEach((img) => {
+            img.addEventListener("click", () => {
+            window.open(img.src, "_blank");
+            });
+        });
+  
+        // Mostrar descripción al hacer clic en el botón
+        document.querySelectorAll("[data-descripcion]").forEach((btn) => {
+            btn.addEventListener("click", () => {
+                const id = btn.getAttribute("data-descripcion");
+                const desc = document.querySelector(`#descripcion-${id}`);
+                if (desc) {
+                desc.classList.toggle("oculta");
+                }
+            });
+        });
+    });
+  </script>  

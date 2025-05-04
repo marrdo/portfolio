@@ -47,7 +47,7 @@ body {
 	line-height: 1.7;
 }
 main {
-	width: 720px;
+	/* width: 720px; */
 	max-width: calc(100% - 2em);
 	margin: auto;
 	padding: 3em 1em;
@@ -59,7 +59,6 @@ h4,
 h5,
 h6 {
 	margin: 0 0 0.5rem 0;
-	color: rgb(var(--black));
 	line-height: 1.2;
 }
 h1 {
@@ -130,6 +129,32 @@ hr {
 	border: none;
 	border-top: 1px solid rgb(var(--gray-light));
 }
+
+figure.hidden {
+    display: none;
+  }
+
+figure picture img,
+figure img,
+figure picture {
+	width: 100%;
+	height: 100%;
+}
+.transicion {
+	transition: opacity 0.5s ease, visibility 0.5s ease, max-height 0.4s ease-in;
+	opacity: 1;
+	visibility: visible;
+	max-height: 1000px; /* lo suficientemente alto para el contenido */
+	overflow: hidden;
+}
+
+.oculta {
+	transition: opacity 0.5s ease, visibility 0.5s ease, max-height 0.4s ease-out;
+	opacity: 0;
+	visibility: hidden;
+	max-height: 0;
+}
+
 @media (max-width: 720px) {
 	body {
 		font-size: 18px;

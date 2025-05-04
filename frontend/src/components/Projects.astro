@@ -2,59 +2,43 @@
 import Badge from './ui/Badge.astro'
 import Button from './ui/Button.astro'
 import { ExternalLink, Github, Terminal } from 'lucide-react'
+import { getProyectos } from '../lib/api'
 
-const projects = [
-  {
-    title: "E-Commerce Platform",
-    description: "A full-stack e-commerce platform with secure payment processing and user authentication.",
-    image: "img/test.jpg",
-    tags: ["React", "Node.js", "MongoDB", "Stripe"],
-    demoUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Portfolio Website",
-    description: "A responsive portfolio website built with Next.js and Tailwind CSS.",
-    image: "img/test.jpg",
-    tags: ["Next.js", "Tailwind CSS", "Framer Motion"],
-    demoUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Task Management App",
-    description: "A collaborative task management application with real-time updates.",
-    image: "img/test.jpg",
-    tags: ["React", "Firebase", "TypeScript"],
-    demoUrl: "#",
-    githubUrl: "#",
-  },
-  {
-    title: "Weather Dashboard",
-    description: "A weather dashboard that displays current and forecasted weather data.",
-    image: "img/test.jpg",
-    tags: ["JavaScript", "OpenWeather API", "Chart.js"],
-    demoUrl: "#",
-    githubUrl: "#",
-  },
-];
+// Fetch a los proyectos desde la API a mi web
+let proyectos: proyectosEntry[] = []
+try {
+  const data = await getProyectos()
+
+  // Mezclar los proyectos aleatoriamente
+  proyectos = data.sort(() => Math.random() - 0.5).slice(0, 4)
+
+} catch (error) {
+  console.error('Error fetching projects:', error)
+}
 ---
 
-<section id="projects" class="py-20 relative">
+<section id="proyectos" class="py-20 relative">
   <div class="absolute inset-0 bg-[radial-gradient(circle_at_top_left,rgba(255,97,0,0.1),transparent_70%)]"></div>
-  <div class="container relative z-10">
-    <div class="text-center mb-12">
-      <h2 class="text-3xl font-bold mb-2">My Projects</h2>
+  <article class="container relative z-10">
+    <section class="text-center mb-12">
+      <h2 class="text-3xl font-bold mb-2">Mis proyectos</h2>
       <div class="w-20 h-1 bg-orange-500 mx-auto mb-6"></div>
       <p class="text-gray-400 max-w-2xl mx-auto">
-        Here are some of my recent projects. Each one presented unique challenges and opportunities to learn and grow.
+        Here are some of my recent proyectos. Each one presented unique challenges and opportunities to learn and grow.
       </p>
-    </div>
+    </section>
 
-    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-      {projects.map((project, index) => (
-        <div class="bg-black/50 border border-orange-500/20 overflow-hidden group rounded-xl">
+    <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
+      {proyectos.map((proyecto, index) => (
+        <div class="bg-black/50 border border-primary/50 overflow-hidden group rounded-xl">
           <div class="relative overflow-hidden h-48">
-            <img src={project.image} alt={project.title} class="w-full h-full object-cover transition-transform duration-500 group-hover:scale-110" />
+            <figure  class="transition-transform duration-500 group-hover:scale-110" >
+              <picture>
+                <source srcset={proyecto.tiny} media="(max-width: 640px)" />
+                <source srcset={proyecto.thumbnail} media="(min-width: 640px)" />
+                <img src={proyecto.thumbnail} alt={proyecto.title} class="" />
+              </picture>
+            </figure>
             <div class="absolute inset-0 bg-gradient-to-t from-black to-transparent opacity-70"></div>
           </div>
           <div class="p-4">
@@ -63,11 +47,11 @@ const projects = [
                     <polyline points="4 17 10 11 4 5" />
                     <line x1="12" y1="19" x2="20" y2="19" />
                 </svg>
-              {project.title}
+              {proyecto.title}
             </div>
-            <p class="text-gray-400 mb-4">{project.description}</p>
+            <p class="text-gray-400 mb-4">{proyecto.description}</p>
             <div class="flex flex-wrap gap-2 mb-4">
-              {project.tags.map(tag => <Badge variant="outline">{tag}</Badge>)}
+              {/* {proyecto.tags.map(tag => <Badge variant="outline">{tag}</Badge>)} */}
             </div>
             <div class="flex gap-3">
               <Button variant="outline" size="sm">
@@ -88,13 +72,13 @@ const projects = [
           </div>
         </div>
       ))}
-    </div>
+    </section>
 
     <div class="text-center mt-10">
       <Button variant="outline">
-        View All Projects
+        View All proyectos
       </Button>
     </div>
-  </div>
+  </article>
   <div class="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-orange-500/50 to-transparent"></div>
 </section>

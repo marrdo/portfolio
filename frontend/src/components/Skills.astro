@@ -1,36 +1,32 @@
 ---
+// Importamos una función para obtener las habilidades
 import { getSkills } from '../lib/api'
 
+// Definimos el tipo de dato que vamos a manejar
 interface Skill {
-  name: string
-  level: number
-  category: string
+  id: string
+  slug: string
+  nombre: string
+  thumbnail: string
+  tiny: string
 }
 
+// Inicializamos las variables que usaremos
 let skillsData: Skill[] = []
 let error: string | null = null
 
+// Intentamos cargar los datos de la API
 try {
   skillsData = await getSkills()
 } catch (err) {
-  console.error('Failed to fetch skills:', err)
-  error = 'Failed to load skills. Please try again later.'
+  console.error('Hubo un fallo al cargar las habilidades:', err)
+  error = 'Fallo al cargar las habilidades.'
 }
-
-const groupedSkills: Record<string, Skill[]> = {}
-for (const skill of skillsData) {
-  if (!groupedSkills[skill.category]) {
-    groupedSkills[skill.category] = []
-  }
-  groupedSkills[skill.category].push(skill)
-}
-
-const categories = Object.keys(groupedSkills)
 ---
-
+<!-- Si hay error, mostramos mensaje de error -->
 {error ? (
   <div class="text-center py-10">
-    <h3 class="text-xl font-bold mb-4">Oops! Something went wrong</h3>
+    <h3 class="text-xl font-bold mb-4 dark:text-lightShades">Oops! Algo salió mal...</h3>
     <p class="text-muted-foreground mb-6">{error}</p>
     <form method="GET">
       <button
@@ -40,48 +36,51 @@ const categories = Object.keys(groupedSkills)
         <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor">
           <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582M20 20v-5h-.581M5.11 5.11a9 9 0 0113.78 0M5.11 18.89a9 9 0 0113.78-13.78" />
         </svg>
-        Retry
+        Reintentar
       </button>
     </form>
   </div>
-) : categories.length === 0 ? (
+) : skillsData.length === 0 ? (
+  <!-- Si no hay habilidades, mostramos mensaje informativo -->
   <div class="text-center py-10">
     <p class="text-muted-foreground">No skills found. Check back soon!</p>
   </div>
 ) : (
+  <!-- Si hay datos, renderizamos las pestañas -->
   <div class="max-w-3xl mx-auto">
     <div class="tabs">
+      <!-- Botones de pestañas -->
       <div class="grid w-full grid-cols-3 bg-background/50 border border-primary/20 mb-4">
-        {categories.map(category => (
+        {skillsData.map(skill => (
           <button
             class="tab-trigger capitalize px-3 py-2 text-sm font-medium"
-            data-tab={category}
+            data-tab={skill.slug} 
             data-active="false"
+            key={skill.id}
           >
-            {category}
+            {skill.nombre}
           </button>
         ))}
       </div>
 
-      {categories.map(category => (
-        <div class="tab-content hidden" id={category}>
+      <!-- Contenido de las pestañas -->
+      {skillsData.map(skill => (
+        <div class="tab-content hidden" id={skill.slug} key={`content-${skill.id}`}>
           <div class="rounded-lg border bg-card/50 border-primary/20 shadow-sm">
             <div class="p-6">
               <div class="grid gap-6">
-                {groupedSkills[category].map(skill => (
-                  <div>
-                    <div class="flex justify-between mb-1">
-                      <span>{skill.name}</span>
-                      <span class="text-primary">{skill.level}%</span>
-                    </div>
-                    <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
-                      <div
-                        class="h-full bg-primary rounded-full transition-all duration-1000"
-                        style={`width: ${skill.level}%`}
-                      ></div>
-                    </div>
+                <div>
+                  <div class="flex justify-between mb-1">
+                    <span>{skill.nombre}</span>
+                    <span class="text-primary">Nivel no definido</span>
                   </div>
-                ))}
+                  <div class="w-full h-2 bg-muted rounded-full overflow-hidden">
+                    <div
+                      class="h-full bg-primary rounded-full transition-all duration-1000"
+                      style="width: 50%"
+                    ></div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>
@@ -91,22 +90,25 @@ const categories = Object.keys(groupedSkills)
   </div>
 )}
 
+<!-- Script para manejar las pestañas -->
 <script>
   document.addEventListener('DOMContentLoaded', () => {
     const triggers = document.querySelectorAll('.tab-trigger')
     const contents = document.querySelectorAll('.tab-content')
 
-    function switchTab(category) {
-      contents.forEach(content => {
-        content.classList.add('hidden')
-      })
+    function switchTab(skill) {
+      // Ocultar todas las pestañas
+      contents.forEach(content => content.classList.add('hidden'))
 
+      // Marcar todos los botones como inactivos
       triggers.forEach(trigger => {
         trigger.dataset.active = 'false'
+        trigger.classList.remove('bg-primary', 'text-background')
       })
 
-      const activeContent = document.getElementById(category)
-      const activeTrigger = document.querySelector(`.tab-trigger[data-tab="${category}"]`)
+      // Mostrar pestaña activa
+      const activeContent = document.getElementById(skill)
+      const activeTrigger = document.querySelector(`.tab-trigger[data-tab="${skill}"]`)
 
       if (activeContent && activeTrigger) {
         activeContent.classList.remove('hidden')
@@ -115,9 +117,11 @@ const categories = Object.keys(groupedSkills)
       }
     }
 
+    // Mostrar la primera pestaña al cargar
     const firstTab = triggers[0]?.dataset.tab
     if (firstTab) switchTab(firstTab)
 
+    // Añadir eventos de clic
     triggers.forEach(trigger => {
       trigger.addEventListener('click', () => {
         switchTab(trigger.dataset.tab)

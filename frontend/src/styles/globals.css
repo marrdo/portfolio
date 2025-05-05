@@ -156,14 +156,14 @@ figure picture {
 }
 
 .card-proyecto {
-	height: 25rem;
+	height: 28rem;
 }
 
 .card-proyecto>div {
-	height: 17rem;
+	height: 18rem;
 }
 .img-proyecto {
-	max-height: 16rem;
+	max-height: 19rem;
 	width: 25%;
 	object-fit: cover;
 	padding-block: 1rem;

@@ -24,14 +24,14 @@ try {
       <h2 class="text-3xl font-bold mb-2">Mis proyectos</h2>
       <div class="w-20 h-1 bg-orange-500 mx-auto mb-6"></div>
       <p class="text-gray-400 max-w-2xl mx-auto">
-        Here are some of my recent proyectos. Each one presented unique challenges and opportunities to learn and grow.
-      </p>
+        Aquí encontrarás una selección de mis proyectos más recientes. Cada uno representa un reto distinto y una oportunidad para seguir aprendiendo, mejorando y aplicando mis habilidades en desarrollo web y diseño.
+      </p>      
     </section>
 
     <section class="grid grid-cols-1 md:grid-cols-2 gap-6">
       {proyectos.map((proyecto, index) => (
-        <article class="border border-primary/50 overflow-hidden group rounded-xl card-proyecto">
-          <div class="relative overflow-hidden flex items-center justify-center bg-gray-500">
+        <article class="border border-primary/50 overflow-hidden group rounded-xl card-proyecto ">
+          <div class="relative overflow-hidden flex items-center justify-center bg-gray-600">
             <figure  class="transition-transform duration-500 group-hover:scale-110 img-proyecto" >
               <picture>
                 <source srcset={proyecto.tiny} media="(max-width: 640px)" />
@@ -39,44 +39,43 @@ try {
                 <img src={proyecto.thumbnail} alt={proyecto.title} class="" />
               </picture>
             </figure>
-            <div class="absolute inset-0 bg-gradient-to-t from-primary to-transparent opacity-15"></div>
+            <div class="absolute inset-0 bg-gradient-to-t from-transparent to-primary opacity-10"></div>
           </div>
-          <div class="p-4">
-            <div class="flex items-center gap-2 text-lg font-semibold mb-2">
+          <div class="bg-gray-600 p-4">
+            <h4 class="flex items-center gap-2 text-lg font-semibold mb-2 text-lightShades">
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 text-orange-500" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <polyline points="4 17 10 11 4 5" />
                     <line x1="12" y1="19" x2="20" y2="19" />
                 </svg>
               {proyecto.title}
-            </div>
-            <p class="text-gray-400 mb-4">{proyecto.description}</p>
+            </h4>
+            {/* <p class="text-gray-400 mb-4">{proyecto.description}</p> */}
             <div class="flex flex-wrap gap-2 mb-4">
-              {/* {proyecto.tags.map(tag => <Badge variant="outline">{tag}</Badge>)} */}
+              {proyecto.habilidades.map(habilidad => <Badge variant="accent">{habilidad.nombre}</Badge>)}
             </div>
             <div class="flex gap-3">
-              <Button variant="outline" size="sm">
+              {/* <Button variant="outline" size="sm">
                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77a5.07 5.07 0 0 0-.09-3.77S18.73.35 16 2.13a13.38 13.38 0 0 0-7 0C6.27.35 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 20.13V24" />
                 </svg>
                 Code
-              </Button>
-              <Button variant="default" size="sm">
+                </Button> */}
+              <Button variant="default" size="sm" href={proyecto.url_proyecto} rel="noopener noreferrer">
                 <svg xmlns="http://www.w3.org/2000/svg" class="mr-2 h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
                     <path d="M18 13v6a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6" />
                     <polyline points="15 3 21 3 21 9" />
                     <line x1="10" y1="14" x2="21" y2="3" />
                 </svg>
-                Live Demo
+                Url del proyecto
               </Button>
             </div>
           </div>
         </article>
       ))}
     </section>
-
     <div class="text-center mt-10">
-      <Button variant="outline">
-        View All proyectos
+      <Button size="lg" href="/projects" class="mx-auto">
+        Ver todos los proyectos
       </Button>
     </div>
   </article>

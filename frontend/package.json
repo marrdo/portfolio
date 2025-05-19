@@ -16,6 +16,7 @@
     "@types/react": "^19.1.2",
     "@types/react-dom": "^19.1.2",
     "astro": "^5.7.5",
+    "free-astro-components": "^1.2.0",
     "lucide": "^0.503.0",
     "lucide-react": "^0.503.0",
     "react": "^19.1.0",

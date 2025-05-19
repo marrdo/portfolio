@@ -45,15 +45,11 @@ const { title, description, image = '/images/profile.webp', canonicalURL } = Ast
 
 <!-- Custom Styles -->
 <style is:global>
-  :root {
-    --font-mono: 'Fira Code', monospace;
-    --font-sans: 'Inter', sans-serif;
-  }
   
   /* Custom scrollbar for the hacker aesthetic */
   ::-webkit-scrollbar {
-    width: 8px;
-    height: 8px;
+    width: 12px;
+    height: 12px;
   }
   
   ::-webkit-scrollbar-track {
@@ -62,7 +58,9 @@ const { title, description, image = '/images/profile.webp', canonicalURL } = Ast
   
   ::-webkit-scrollbar-thumb {
     background: #FF6600;
-    border-radius: 4px;
+    border-radius: 6px;
+    border: 3px solid #ad6640;
+    background-clip: content-box;
   }
   
   ::-webkit-scrollbar-thumb:hover {
@@ -78,6 +76,9 @@ const { title, description, image = '/images/profile.webp', canonicalURL } = Ast
   /* Smooth transitions for theme switching */
   html {
     transition: background-color 0.3s ease;
+    scroll-behavior: smooth;
+    scrollbar-width: auto; /* Opciones: auto | thin | none */
+    scrollbar-color: #FF6600 #1a1a1a; /* Color del scroll y del fondo */
   }
   
   body {

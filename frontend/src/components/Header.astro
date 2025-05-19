@@ -17,7 +17,7 @@ const currentPath = Astro.url.pathname;
     <nav class="hidden md:flex items-center gap-6">
       <Button variant="secondary" className="text-darkShades hover:text-primary dark:text-lightShades dark:hover:text-primary" href="/#home">Home
       </Button>
-      <Button variant="secondary" className="text-darkShades hover:text-primary dark:text-lightShades dark:hover:text-primary" href="/#projects">Proyectos
+      <Button variant="secondary" className="text-darkShades hover:text-primary dark:text-lightShades dark:hover:text-primary" href="/#proyectos">Proyectos
       </Button>
       <Button variant="secondary" className="text-darkShades hover:text-primary dark:text-lightShades dark:hover:text-primary" href="/#blog">Blog
       </Button>
@@ -32,17 +32,6 @@ const currentPath = Astro.url.pathname;
     </figure>
   </section>
 
-  <!-- Menú móvil (implementación adicional) -->
+  <!-- Menú móvil-->
 </header>
 
-<script>
-  function scrollToContact(event) {
-    event.preventDefault();
-    const contactSection = document.getElementById("contact");
-    if (contactSection && location.pathname === "/") {
-      contactSection.scrollIntoView({ behavior: "smooth" });
-    } else {
-      window.location.href = "/#contact";
-    }
-  }
-</script>

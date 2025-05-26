@@ -1,0 +1,59 @@
+---
+import MainLayout from '../layouts/MainLayout.astro';
+import ProjectCard from '../components/ProjectCard.astro'
+import { ExternalLink, Github, Terminal } from 'lucide-react'
+import { getProyectos } from '../lib/api'
+
+// Fetch a los proyectos desde la API a mi web
+let proyectos = []
+try {
+  const data = await getProyectos()
+
+  proyectos = data
+    .map(p => ({
+      title: p.title,
+      description: p.descripcion,
+      tags: p.habilidades?.map(h => h.nombre) ?? [],
+      imageDesktop: p.thumbnail,
+      imageMobile: p.tiny,
+      imageAlt: p.nombre,
+      link: p.url_proyecto,
+      github: p.github
+    }))
+    .sort((a, b) => a.title.localeCompare(b.title))
+console.log('Proyectos ', proyectos);
+} catch (error) {
+  console.error('Error fetching proyectos:', error)
+}
+---
+
+<MainLayout 
+  title="Proyectos | Portfolio"
+  description="Explora los proyectos destacados en desarrollo web, en los que estoy trabajando o he participado."
+>
+  <section class="py-8">
+    <div class="max-w-3xl mx-auto text-center mb-12">
+      <h1 class="text-4xl font-bold mb-4">
+        <span class="text-primary">&lt;</span> Proyectos <span class="text-primary">/&gt;</span>
+      </h1>
+      <p class="text-xl text-gray-300">
+        A collection of my work in web development, cybersecurity, and artificial intelligence.
+      </p>
+    </div>
+    
+    <div class="grid md:grid-cols-2 gap-8">
+      {proyectos.map(proyecto => (
+        <ProjectCard 
+          title={proyecto.title}
+          description={proyecto.description}
+          tags={proyecto.tags}
+          imageDesktop={proyecto.thumbnail}
+          imageMobile={proyecto.tiny}
+          imageAlt={proyecto.imageAlt}
+          link={proyecto.link}
+          github={proyecto.github}
+        />
+      ))}
+    </div>
+  </section>
+</MainLayout>

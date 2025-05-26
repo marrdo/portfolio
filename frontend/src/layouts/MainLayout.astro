@@ -2,7 +2,6 @@
 import BaseHead from "../components/BaseHead.astro";
 import Header from "../components/Header.astro";
 import Footer from "../components/Footer.astro";
-import ClientRouter from "astro/components/ClientRouter.astro";
 
 export interface Props {
   title: string;
@@ -53,7 +52,6 @@ const {
 
       window.localStorage.setItem("theme", theme);
     </script>
-    <ClientRouter />
   </head>
   <body
     class="min-h-screen bg-light-background dark:bg-dark-codeBackground text-light-text dark:text-dark-text transition-colors duration-300 font-sans flex flex-col"

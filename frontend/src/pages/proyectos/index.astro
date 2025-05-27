@@ -1,8 +1,8 @@
 ---
-import MainLayout from '../layouts/MainLayout.astro';
-import ProjectCard from '../components/ProjectCard.astro'
+import MainLayout from '../../layouts/MainLayout.astro';
+import ProjectCard from '../../components/ProjectCard.astro'
 import { ExternalLink, Github, Terminal } from 'lucide-react'
-import { getProyectos } from '../lib/api'
+import { getProyectos } from '../../lib/api'
 
 // Fetch a los proyectos desde la API a mi web
 let proyectos = []
@@ -11,17 +11,18 @@ try {
 
   proyectos = data
     .map(p => ({
-      title: p.title,
-      description: p.descripcion,
-      tags: p.habilidades?.map(h => h.nombre) ?? [],
-      imageDesktop: p.thumbnail,
-      imageMobile: p.tiny,
-      imageAlt: p.nombre,
-      link: p.url_proyecto,
+      titulo: p.nombre,
+      slug : p.slug,
+      descripcion: p.descripcion,
+      habilidades: p.habilidades?.map(h => h.nombre) ?? [],
+      thumbnail: p.thumbnail,
+      tiny: p.tiny,
+      imageAlt: p.title,
+      url_proyecto: p.url_proyecto,
       github: p.github
     }))
-    .sort((a, b) => a.title.localeCompare(b.title))
-console.log('Proyectos ', proyectos);
+    .sort((a, b) => a.titulo.localeCompare(b.titulo))
+console.log('Proyectos Ordenados', proyectos);
 } catch (error) {
   console.error('Error fetching proyectos:', error)
 }
@@ -44,13 +45,14 @@ console.log('Proyectos ', proyectos);
     <div class="grid md:grid-cols-2 gap-8">
       {proyectos.map(proyecto => (
         <ProjectCard 
-          title={proyecto.title}
-          description={proyecto.description}
-          tags={proyecto.tags}
-          imageDesktop={proyecto.thumbnail}
-          imageMobile={proyecto.tiny}
+          titulo={proyecto.titulo}
+          slug={proyecto.slug}
+          descripcion={proyecto.descripcion}
+          habilidades={proyecto.habilidades}
+          thumbnail={proyecto.thumbnail}
+          tiny={proyecto.tiny}
           imageAlt={proyecto.imageAlt}
-          link={proyecto.link}
+          link={proyecto.url_proyecto}
           github={proyecto.github}
         />
       ))}

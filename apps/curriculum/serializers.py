@@ -25,6 +25,7 @@ class ExperienciaSerializer(serializers.ModelSerializer):
 
 class ProyectoSerializer(serializers.ModelSerializer):
     habilidades = HabilidadSerializer(many=True)  # Un proyecto puede tener muchas habilidades
+    empresas = EmpresaSerializer(many=True, read_only=True)
 
     class Meta:
         model = Proyecto

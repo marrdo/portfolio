@@ -53,21 +53,23 @@ class HabilidadAdmin(admin.ModelAdmin):
 
 @admin.register(Proyecto)
 class ProyectoAdmin(admin.ModelAdmin):
-    list_display = ('nombre', 'perfil', 'url_proyecto', 'url_proyecto_demo', 'created_at', 'modified_at')
-    search_fields = ('nombre', 'perfil__nombre')  
-    list_filter = ('nombre',)  
-    ordering = ('nombre',)  
+    list_display = ('nombre', 'perfil', 'tipo', 'url_proyecto', 'url_proyecto_demo', 'created_at', 'modified_at')
+    search_fields = ('nombre', 'perfil__nombre')
+    list_filter = ('nombre', 'tipo', 'empresas')  # Ahora puedes filtrar por tipo y empresa
+    ordering = ('nombre',)
     date_hierarchy = 'created_at'
     readonly_fields = ('created_at', 'modified_at')
-    filter_horizontal = ('habilidades',)  
+    filter_horizontal = ('habilidades', 'empresas')  # Ahora puedes seleccionar habilidades y empresas
+
     prepopulated_fields = {'slug': ('nombre',)}
+
     fieldsets = (
         ('Detalles del Proyecto', {
-            'fields': ('nombre', 'slug', 'title', 'perfil', 'descripcion', 'texto_enriquecido', 'habilidades')
+            'fields': ('nombre', 'slug', 'title', 'perfil', 'introduccion', 'tipo', 'descripcion', 'texto_enriquecido', 'habilidades', 'empresas')
         }),
         ('SEO', {
             'fields': ('url_canonical', 'meta_description', 'og_title', 'og_description', 'og_image'),
-            'classes': ('collapse',),  # Para que los meta campos estén colapsados por defecto
+            'classes': ('collapse',),
         }),
         ('Imágenes', {
             'fields': ('thumbnail', 'tiny'),
@@ -80,7 +82,6 @@ class ProyectoAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
-
 @admin.register(Empresa)
 class EmpresaAdmin(admin.ModelAdmin):
     list_display = ('nombre', 'website')

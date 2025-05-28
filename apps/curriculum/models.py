@@ -207,6 +207,12 @@ class Proyecto(BaseSEO, models.Model):
         created_at (DateTimeField): Fecha de creación del proyecto.
         modified_at (DateTimeField): Fecha de la última modificación.
     """
+    TIPOS_PROYECTO = (
+        ("web", "Web"),
+        ("app", "Aplicación web"),
+        ("desktop", "Aplicación de escritorio"),
+        ("otro", "Otro"),
+    )
     id = models.UUIDField(primary_key=True, unique=True, default=uuid.uuid4, editable=False)
     slug = models.SlugField(_("Slug"), unique=True, max_length=128)
     nombre = models.CharField(_("Nombre del proyecto"), max_length=100)
@@ -216,27 +222,34 @@ class Proyecto(BaseSEO, models.Model):
     url_proyecto_demo = models.URLField(_("URL demo del proyecto"), max_length=200, blank=True, null=True)
     thumbnail = models.ImageField(_("Imagen de proyecto"), upload_to=upload_to_proyecto, blank=True, null=True)
     tiny = models.ImageField(_("Imagen de proyecto para móvil"), upload_to=upload_to_proyecto, blank=True, null=True)
-    descripcion = CKEditor5Field(_('Descripción'), config_name='extends')#Esto se podria usar para hacer una vista detallada de cada proyecto.
+
+    introduccion = models.TextField(_("Introducción"), max_length=300, blank=True)
+    descripcion = models.TextField(_("Descripción"))
     texto_enriquecido = CKEditor5Field(_('Texto enriquecido'), config_name='extends', null=True, blank=True)
+
+    tipo = models.CharField(_("Tipos de proyectos"), max_length=20, choices=TIPOS_PROYECTO, default="app")
+
     habilidades = models.ManyToManyField("Habilidad", verbose_name=_("Habilidades"))
+    empresas = models.ManyToManyField("Empresa", related_name="proyectos", blank=True, verbose_name=_("Empresa"))
+
     created_at = models.DateTimeField(_("Creado en"), auto_now_add=True)
     modified_at = models.DateTimeField(_("Modificado en"), auto_now=True)
-    
+
     class Meta:
         verbose_name = _("Proyecto")
         verbose_name_plural = _("Proyectos")
         ordering = ["-created_at"]
-    
+
     def save(self, *args, **kwargs):
         if not self.slug:
             self.slug = generate_slug(self.nombre)
-        # Verificar si el slug ya existe y agregar un sufijo si es necesario
         base_slug = self.slug
         counter = 1
         while Proyecto.objects.filter(slug=self.slug).exists():
             self.slug = f"{base_slug}-{counter}"
             counter += 1
         super().save(*args, **kwargs)
+
     def __str__(self):
         return f"{self.nombre}"
     

@@ -1,58 +1,33 @@
 ---
-import { Image } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
+import { getBlogPosts } from '../../lib/api';
 
-// Blog post data
-const posts = [
-  {
-    title: 'Building Secure Web Applications',
-    excerpt: 'Learn the best practices for creating secure web applications and protecting user data from common vulnerabilities like XSS and CSRF attacks.',
-    date: 'April 15, 2023',
-    slug: 'building-secure-web-applications',
-    image: 'src/assets/images/logo.svg',
-    imageAlt: 'Secure web application diagram',
-    tags: ['Security', 'Web Development', 'Best Practices'],
-  },
-  {
-    title: 'The Future of AI in Cybersecurity',
-    excerpt: 'Exploring how artificial intelligence is transforming the landscape of cybersecurity, from threat detection to automated response systems.',
-    date: 'March 22, 2023',
-    slug: 'future-of-ai-in-cybersecurity',
-    image: 'src/assets/images/logo.svg',
-    imageAlt: 'AI cybersecurity concept',
-    tags: ['AI', 'Cybersecurity', 'Machine Learning'],
-  },
-  {
-    title: 'Getting Started with Astro: A Practical Guide',
-    excerpt: 'A comprehensive guide to building fast, content-focused websites with Astro, the modern static site generator that delivers lightning-fast performance.',
-    date: 'February 10, 2023',
-    slug: 'getting-started-with-astro',
-    image: 'src/assets/images/logo.svg',
-    imageAlt: 'Astro logo and code',
-    tags: ['Astro', 'Web Development', 'Performance'],
-  },
-  {
-    title: 'Implementing Zero Trust Security Model',
-    excerpt: 'An in-depth look at the Zero Trust security model and how to implement it in your organization to improve your security posture.',
-    date: 'January 5, 2023',
-    slug: 'implementing-zero-trust-security',
-    image: 'src/assets/images/logo.svg',
-    imageAlt: 'Zero Trust security diagram',
-    tags: ['Security', 'Zero Trust', 'Enterprise'],
-  },
-];
+let posts = [];
+
+try {
+  const data = await getBlogPosts(); // ✅ await aquí es esencial
+  console.log(data);
+
+  posts = data.map(post => ({
+    // Aquí defines la transformación de cada post si es necesario
+    ...post
+  }));
+} catch (error) {
+  console.error('Error haciendo fetch a los Posts: ' + error);
+}
 ---
 
+
 <MainLayout 
-  title="Blog | DevHacker Portfolio"
-  description="Articles on web development, cybersecurity, and technology trends."
+  title="Blog | Manuel Maldonado Portfolio"
+  description="Artículos sobre desarrollo web, tecnologías desarrollos webs, guías desarrollos webs, consejos desarrollos webs."
 >
   <section class="py-8">
     <div class="max-w-3xl mx-auto text-center mb-12">
       <h1 class="text-4xl font-bold mb-4">
         <span class="text-primary">&lt;</span> Blog <span class="text-primary">/&gt;</span>
       </h1>
-      <p class="text-xl text-gray-300">
+      <p class="text-xl dark:text-gray-300 text-gray-700">
         Thoughts, tutorials, and insights on web development, cybersecurity, and technology.
       </p>
     </div>
@@ -64,19 +39,17 @@ const posts = [
             <div class="md:w-1/3">
               <a href={`/blog/${post.slug}`}>
                 <img 
-                  src={post.image || "/assets/images/logo.svg"} 
-                  alt={post.imageAlt} 
+                  src={post.thumbnail} 
+                  alt={`Imagen del post ${post.title}`} 
                   class="w-full h-full object-cover md:h-full"
                 />
               </a>
             </div>
             <div class="p-6 md:w-2/3">
               <div class="flex flex-wrap gap-2 mb-3">
-                {post.tags.map(tag => (
-                  <span class="px-2 py-1 text-xs font-mono rounded bg-gray-800 text-primary">
-                    {tag}
-                  </span>
-                ))}
+                <span class="px-2 py-1 text-xs font-mono rounded bg-gray-800 text-primary">
+                  {post.category.name}
+                </span>
               </div>
               <div class="text-sm text-gray-400 mb-2 font-mono">{post.date}</div>
               <h2 class="text-2xl font-bold mb-3 text-white">
@@ -85,10 +58,10 @@ const posts = [
                 </a>
               </h2>
               <p class="text-gray-300 mb-4">
-                {post.excerpt}
+                {post.description}
               </p>
               <a href={`/blog/${post.slug}`} class="text-primary hover:text-darkAccent font-medium transition-colors inline-flex items-center">
-                Read Article
+                Leer artículo
                 <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 ml-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
                   <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M14 5l7 7m0 0l-7 7m7-7H3" />
                 </svg>

@@ -173,7 +173,17 @@ figure picture {
 	object-fit: cover;
 	padding-block: 1rem;
 }
-
+.logo-proyecto{
+	max-width: 50%;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	margin: 0 auto;
+	padding: 1rem;
+}
+#proyecto-individual aside > div {
+	margin-top: 3.5rem;
+}
 @media (max-width: 720px) {
 	body {
 		font-size: 18px;

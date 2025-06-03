@@ -1,115 +1,38 @@
 ---
-import { Image } from 'astro:assets';
 import MainLayout from '../../layouts/MainLayout.astro';
-
+import { getBlogPosts, getBlogPostBySlug } from '../../lib/api';
 // This would normally come from a CMS or content collection
-const posts = [
-  {
-    title: 'Building Secure Web Applications',
-    content: `
-      <p>Security is a critical aspect of web application development. In this article, we'll explore best practices for building secure web applications and protecting user data.</p>
-      
-      <h2>Common Security Vulnerabilities</h2>
-      
-      <p>Web applications face numerous security threats, including:</p>
-      
-      <ul>
-        <li><strong>Cross-Site Scripting (XSS)</strong>: Attackers inject malicious scripts into web pages viewed by users.</li>
-        <li><strong>SQL Injection</strong>: Malicious SQL statements are inserted into entry fields for execution.</li>
-        <li><strong>Cross-Site Request Forgery (CSRF)</strong>: Forces authenticated users to execute unwanted actions.</li>
-        <li><strong>Broken Authentication</strong>: Weaknesses in authentication mechanisms.</li>
-      </ul>
-      
-      <h2>Security Best Practices</h2>
-      
-      <p>To build secure web applications, follow these best practices:</p>
-      
-      <h3>1. Input Validation and Sanitization</h3>
-      
-      <p>Always validate and sanitize user input on both client and server sides. Never trust user input.</p>
-      
-      <pre><code>// Example of input validation in JavaScript
-function validateInput(input) {
-  // Remove potentially dangerous characters
-  return input.replace(/[<>&"']/g, '');
-}</code></pre>
-      
-      <h3>2. Use Parameterized Queries</h3>
-      
-      <p>Prevent SQL injection by using parameterized queries or prepared statements.</p>
-      
-      <pre><code>// Example of a parameterized query
-const query = 'SELECT * FROM users WHERE username = ?';
-db.execute(query, [username]);</code></pre>
-      
-      <h3>3. Implement Proper Authentication</h3>
-      
-      <p>Use strong password policies, multi-factor authentication, and secure session management.</p>
-      
-      <h3>4. Apply the Principle of Least Privilege</h3>
-      
-      <p>Grant users and systems only the permissions they need to perform their tasks.</p>
-      
-      <h2>Conclusion</h2>
-      
-      <p>Security should be integrated into every phase of the development lifecycle. By following these best practices, you can significantly reduce the risk of security breaches in your web applications.</p>
-    `,
-    date: 'April 15, 2023',
-    slug: 'building-secure-web-applications',
-    image: '/assets/images/logo.svg',
-    imageAlt: 'Secure web application diagram',
-    tags: ['Security', 'Web Development', 'Best Practices'],
-    author: 'John Doe',
-  },
-  {
-    title: 'The Future of AI in Cybersecurity',
-    content: `
-      <p>Artificial Intelligence is revolutionizing cybersecurity. This article explores how AI is transforming threat detection and response.</p>
-      
-      <h2>AI-Powered Threat Detection</h2>
-      
-      <p>Machine learning algorithms can analyze patterns and identify anomalies that might indicate security threats.</p>
-      
-      <h2>Automated Response Systems</h2>
-      
-      <p>AI can automate responses to common security incidents, reducing response time and minimizing damage.</p>
-      
-      <h2>Challenges and Limitations</h2>
-      
-      <p>Despite its potential, AI in cybersecurity faces challenges such as false positives and the need for human oversight.</p>
-    `,
-    date: 'March 22, 2023',
-    slug: 'future-of-ai-in-cybersecurity',
-    image: '/assets/images/logo.svg',
-    imageAlt: 'AI cybersecurity concept',
-    tags: ['AI', 'Cybersecurity', 'Machine Learning'],
-    author: 'John Doe',
-  },
-];
+const posts = [];
 
-export function getStaticPaths() {
-  return posts.map(post => ({
-    params: { slug: post.slug },
-    props: { post },
+export async function getStaticPaths() {
+  const posts = await getBlogPosts();
+  return posts.map((blog) => ({
+    params: { slug: blog.slug },
   }));
 }
 
-const { post } = Astro.props;
+const { slug } = Astro.params;
+let post = null;
+try {
+  post = await getBlogPostBySlug(slug);
+} catch (error) {
+  console.error("Error fetching project:", error);
+}
+const autor = "Manuel Maldonado";
+console.log(post);
 ---
 
 <MainLayout 
-  title={`${post.title} | DevHacker Blog`}
-  description={post.content.substring(0, 160).replace(/<[^>]*>/g, '')}
+  title={`Blog de Manuel Maldonado`}
+  description={post.description.substring(0, 160).replace(/<[^>]*>/g, '')}
   image={post.image}
 >
   <article class="max-w-3xl mx-auto py-8">
     <div class="mb-8">
       <div class="flex flex-wrap gap-2 mb-4">
-        {post.tags.map(tag => (
           <span class="px-2 py-1 text-xs font-mono rounded bg-gray-800 text-primary">
-            {tag}
+            {post.category.name}
           </span>
-        ))}
       </div>
       
       <h1 class="text-3xl md:text-4xl lg:text-5xl font-bold mb-4">
@@ -119,7 +42,7 @@ const { post } = Astro.props;
       <div class="flex items-center text-gray-400 mb-6">
         <span class="font-mono">{post.date}</span>
         <span class="mx-2">•</span>
-        <span>By {post.author}</span>
+        <span>Escrito por {autor}</span>
       </div>
       
       <img 
@@ -129,7 +52,7 @@ const { post } = Astro.props;
       />
     </div>
     
-    <div class="prose prose-invert prose-orange max-w-none">
+    <div class="prose dark:prose-invert prose-orange max-w-none">
       <Fragment set:html={post.content} />
     </div>
     
@@ -139,17 +62,16 @@ const { post } = Astro.props;
           <svg xmlns="http://www.w3.org/2000/svg" class="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to Blog
+          Volver al blog
         </a>
         
         <div class="flex space-x-4">
-          <a href="#" class="text-gray-400 hover:text-primary transition-colors">
-            <span class="sr-only">Share on Twitter</span>
-            <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
-              <path d="M8.29 20.251c7.547 0 11.675-6.253 11.675-11.675 0-.178 0-.355-.012-.53A8.348 8.348 0 0022 5.92a8.19 8.19 0 01-2.357.646 4.118 4.118 0 001.804-2.27 8.224 8.224 0 01-2.605.996 4.107 4.107 0 00-6.993 3.743 11.65 11.65 0 01-8.457-4.287 4.106 4.106 0 001.27 5.477A4.072 4.072 0 012.8 9.713v.052a4.105 4.105 0 003.292 4.022 4.095 4.095 0 01-1.853.07 4.108 4.108 0 003.834 2.85A8.233 8.233 0 012 18.407a11.616 11.616 0 006.29 1.84" />
-            </svg>
-          </a>
-          <a href="#" class="text-gray-400 hover:text-primary transition-colors">
+          <a 
+            href={`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(Astro.site + Astro.url.pathname)}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            class="text-gray-400 hover:text-primary transition-colors"
+          >
             <span class="sr-only">Share on LinkedIn</span>
             <svg class="h-5 w-5" fill="currentColor" viewBox="0 0 24 24" aria-hidden="true">
               <path fill-rule="evenodd" d="M4.98 3.5c0 1.381-1.11 2.5-2.48 2.5s-2.48-1.119-2.48-2.5c0-1.38 1.11-2.5 2.48-2.5s2.48 1.12 2.48 2.5zm.02 4.5h-5v16h5v-16zm7.982 0h-4.968v16h4.969v-8.399c0-4.67 6.029-5.052 6.029 0v8.399h4.988v-10.131c0-7.88-8.922-7.593-11.018-3.714v-2.155z" clip-rule="evenodd" />

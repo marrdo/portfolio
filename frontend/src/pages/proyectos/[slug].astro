@@ -1,8 +1,7 @@
 ---
-export const prerender = false;
-
 import MainLayout from "../../layouts/MainLayout.astro";
 import { getProjectBySlug, getProyectos } from "../../lib/api";
+import Button from "../../components/ui/Button.astro";
 
 export async function getStaticPaths() {
   const proyectos = await getProyectos();
@@ -18,275 +17,146 @@ try {
 } catch (error) {
   console.error("Error fetching project:", error);
 }
+const allProyectos = await getProyectos();
 
-// Mock additional data that could come from your API
-const mockTechnologies = ["Astro", "Tailwind CSS", "TypeScript", "Node.js"];
-const mockProjectType = "Web Application";
-const mockStatus = "Completed";
-const mockDuration = "3 months";
-const mockYear = "2024";
+// Filtramos los relacionados por empresa (excluyendo el actual)
+const proyectosRelacionados = allProyectos.filter((p) => {
+  if (p.slug === proyecto.slug) return false;
+
+  const empresasActual = proyecto.empresas.map(e => e.id);
+  const empresasOtro = p.empresas?.map(e => e.id) || [];
+
+  // Ver si comparten al menos una empresa
+  return empresasOtro.some(id => empresasActual.includes(id));
+});
+const mockStatus = "Completado";
 ---
-
-<MainLayout>
+<MainLayout
+title="Fullstack Developer | Desarrollador Fullstack | Desarrollador Backend Sevilla | Desarrollador Web Sevilla | Paginas Web Sevilla. Proyecto individual."
+description=`Portfolio de Manuel Maldonado desarrollador web fullstack. Proyecto ${proyecto.nombre}`
+image={proyecto.thumbnail}
+>
   {proyecto ? (
-    <article class="min-h-screen bg-lightShades dark:bg-dark-background transition-colors duration-300">
-      <!-- Hero Section -->
+    <article id="proyecto-individual" class="min-h-screen bg-lightShades dark:bg-dark-background transition-colors duration-300">
+      <!-- HERO -->
       <div class="relative overflow-hidden bg-gradient-to-br from-primary/10 via-lightAccent/5 to-transparent dark:from-primary/20 dark:via-lightAccent/10 dark:to-transparent">
-        <div class="absolute inset-0 bg-[url('data:image/svg+xml,%3Csvg width="60" height="60" viewBox="0 0 60 60" xmlns="http://www.w3.org/2000/svg"%3E%3Cg fill="none" fill-rule="evenodd"%3E%3Cg fill="%23ff6600" fill-opacity="0.05"%3E%3Ccircle cx="30" cy="30" r="2"/%3E%3C/g%3E%3C/g%3E%3C/svg%3E')] opacity-30"></div>
-        
-        <div class="relative max-w-4xl mx-auto px-6 py-16 lg:py-24">º 
+        <div class="absolute inset-0 opacity-30"></div>
+
+        <div class="relative max-w-4xl mx-auto px-6 py-16 lg:py-24">
           <!-- Breadcrumb -->
-          <nav class="mb-8" aria-label="Breadcrumb">
-            <ol class="flex items-center space-x-2 text-sm">
-              <li>
-                <a href="/" class="text-light-text/70 dark:text-dark-text/70 hover:text-primary transition-colors">
-                  Home
-                </a>
-              </li>
-              <li class="text-light-text/50 dark:text-dark-text/50">/</li>
-              <li>
-                <a href="/projects" class="text-light-text/70 dark:text-dark-text/70 hover:text-primary transition-colors">
-                  Projects
-                </a>
-              </li>
-              <li class="text-light-text/50 dark:text-dark-text/50">/</li>
-              <li class="text-light-text dark:text-dark-text font-medium">
-                {proyecto.titulo}
-              </li>
+          <nav class="mb-8 text-sm" aria-label="Breadcrumb">
+            <ol class="flex items-center space-x-2">
+              <li><a href="/" class="text-light-text/70 dark:text-dark-text/70 hover:text-primary">Home</a></li>
+              <li>/</li>
+              <li><a href="/proyectos" class="text-light-text/70 dark:text-dark-text/70 hover:text-primary">Proyectos</a></li>
+              <li>/</li>
+              <li class="text-light-text dark:text-dark-text font-medium">{proyecto.nombre}</li>
             </ol>
           </nav>
 
-          <!-- Project Header -->
+          <!-- Header -->
           <div class="space-y-6">
-            <!-- Status Badge -->
-            <div class="flex flex-wrap items-center gap-3">
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/20 text-primary border border-primary/30">
-                <svg class="w-3 h-3 mr-1.5" fill="currentColor" viewBox="0 0 20 20">
-                  <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd" />
-                </svg>
-                {mockStatus}
-              </span>
-              <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-lightAccent/20 text-lightAccent dark:bg-lightAccent/30 dark:text-lightAccent border border-lightAccent/30">
-                {mockProjectType}
-              </span>
-              <span class="text-sm text-light-text/60 dark:text-dark-text/60">
-                {mockYear} • {mockDuration}
-              </span>
-            </div>
-
-            <!-- Title -->
             <h1 class="text-4xl lg:text-5xl xl:text-6xl font-bold text-light-text dark:text-dark-text leading-tight">
-              {proyecto.titulo}
+              {proyecto.nombre}
             </h1>
 
-            <!-- Description -->
-            <p class="text-lg lg:text-xl text-light-text/80 dark:text-dark-text/80 leading-relaxed max-w-3xl">
-              {proyecto.descripcion}
+            <p class="text-lg lg:text-xl text-light-text/80 dark:text-dark-text/80 max-w-3xl  leading-relaxed ">
+              {proyecto.introduccion}
             </p>
 
-            <!-- Action Buttons -->
             <div class="flex flex-wrap gap-4 pt-4">
-              <button class="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
-                <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                </svg>
-                View Live Demo
-              </button>
-              <button class="inline-flex items-center px-6 py-3 bg-transparent border-2 border-light-text/20 dark:border-dark-text/20 text-light-text dark:text-dark-text hover:border-primary hover:text-primary font-medium rounded-lg transition-all duration-200">
+              <Button a={proyecto.url_proyecto} class="inline-flex items-center px-6 py-3 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-all duration-200 transform hover:scale-105 hover:shadow-lg">
                 <svg class="w-5 h-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
                   <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
                 </svg>
-                View Source
-              </button>
+                Ver proyecto
+              </Button>
             </div>
           </div>
         </div>
       </div>
 
-      <!-- Main Content -->
-      <div class="max-w-4xl mx-auto px-6 py-16">
-        <div class="grid lg:grid-cols-3 gap-12">
-          <!-- Main Content Column -->
-          <div class="lg:col-span-2 space-y-12">
-            <!-- Project Images/Gallery -->
-            <section>
-              <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-6">
-                Project Gallery
-              </h2>
-              <div class="grid gap-6">
-                {proyecto.images && proyecto.images.length > 0 ? (
-                  <div class="space-y-4">
-                    {proyecto.images.map((image, index) => (
-                      <div class="relative group overflow-hidden rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10">
-                        <figure>
-                          <picture>
-                            <img
-                              src={image.url || "/placeholder.svg?height=400&width=800"}
-                              alt={image.alt || `${proyecto.titulo} screenshot ${index + 1}`}
-                              class="w-full h-auto transition-transform duration-500 group-hover:scale-105"
-                              loading="lazy"
-                            />
-                          </picture>
-                        </figure>
-                        <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-                      </div>
-                    ))}
-                  </div>
-                ) : (
-                  <div class="relative group overflow-hidden rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10 aspect-video flex items-center justify-center">
-                    <div class="text-center space-y-3">
-                      <svg class="w-16 h-16 mx-auto text-light-text/30 dark:text-dark-text/30" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z" />
-                      </svg>
-                      <p class="text-light-text/60 dark:text-dark-text/60">Project images coming soon</p>
-                    </div>
-                  </div>
-                )}
-              </div>
-            </section>
+      <!-- CONTENIDO PRINCIPAL -->
+      <div class="max-w-6xl mx-auto px-6 py-16 grid lg:grid-cols-3 gap-12">
+        <!-- Columna Principal -->
+        <div class="lg:col-span-2 space-y-12">
+          <!-- Logo del proyecto -->
+          <section>
+            <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-6">Logo del proyecto</h2>
+            <div class="relative group overflow-hidden rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10">
+              <figure class="logo-proyecto">
+                <picture>
+                  <source srcset={proyecto.tiny} media="(max-width: 640px)" />
+                  <source srcset={proyecto.thumbnail} media="(min-width: 640px)" />
+                  <img
+                    src={proyecto.thumbnail}
+                    alt={`Logo del proyecto ${proyecto.nombre}`}
+                    class="transition-transform duration-500 group-hover:scale-105"
+                    loading="lazy"
+                  />
+                </picture>
+              </figure>
+              <div class="absolute inset-0 bg-gradient-to-t from-black/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
+            </div>
+          </section>
 
-            <!-- Project Details -->
-            <section>
-              <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-6">
-                About This Project
-              </h2>
-              <div class="prose prose-lg prose-gray dark:prose-invert max-w-none">
-                <p class="text-light-text/80 dark:text-dark-text/80 leading-relaxed">
-                  This project showcases modern web development practices and demonstrates 
-                  the power of combining cutting-edge technologies to create exceptional user experiences. 
-                  The implementation focuses on performance, accessibility, and maintainable code architecture.
-                </p>
-                <p class="text-light-text/80 dark:text-dark-text/80 leading-relaxed">
-                  Key features include responsive design, optimized performance, and seamless user interactions. 
-                  The project was built with scalability in mind, ensuring it can grow and adapt to future requirements.
-                </p>
-              </div>
-            </section>
-
-            <!-- Features Section -->
-            <section>
-              <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-6">
-                Key Features
-              </h2>
-              <div class="grid sm:grid-cols-2 gap-4">
-                {[
-                  { icon: "⚡", title: "Lightning Fast", description: "Optimized for performance and speed" },
-                  { icon: "📱", title: "Responsive Design", description: "Works perfectly on all devices" },
-                  { icon: "🎨", title: "Modern UI/UX", description: "Clean and intuitive interface" },
-                  { icon: "🔒", title: "Secure", description: "Built with security best practices" }
-                ].map((feature) => (
-                  <div class="p-4 rounded-lg bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10 hover:border-primary/30 transition-colors duration-200">
-                    <div class="text-2xl mb-2">{feature.icon}</div>
-                    <h3 class="font-semibold text-light-text dark:text-dark-text mb-1">
-                      {feature.title}
-                    </h3>
-                    <p class="text-sm text-light-text/70 dark:text-dark-text/70">
-                      {feature.description}
-                    </p>
-                  </div>
-                ))}
-              </div>
-            </section>
+          <!-- Descripción -->
+          <section>
+            <h2 class="section-title">Mi colaboración en el proyecto</h2>
+            <div class="prose prose-lg prose-gray dark:prose-invert max-w-none">
+            <p class="text-light-text/80 dark:text-dark-text/80 leading-relaxed">
+              {proyecto.descripcion}
+            </p>
           </div>
+          </section>
+        </div>
 
-          <!-- Sidebar -->
-          <div class="lg:col-span-1">
-            <div class="sticky top-8 space-y-8">
-              <!-- Project Info -->
-              <div class="p-6 rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10">
-                <h3 class="text-lg font-semibold text-light-text dark:text-dark-text mb-4">
-                  Project Info
-                </h3>
-                <dl class="space-y-3">
-                  <div>
-                    <dt class="text-sm font-medium text-light-text/70 dark:text-dark-text/70">Status</dt>
-                    <dd class="text-sm text-light-text dark:text-dark-text">{mockStatus}</dd>
-                  </div>
-                  <div>
-                    <dt class="text-sm font-medium text-light-text/70 dark:text-dark-text/70">Duration</dt>
-                    <dd class="text-sm text-light-text dark:text-dark-text">{mockDuration}</dd>
-                  </div>
-                  <div>
-                    <dt class="text-sm font-medium text-light-text/70 dark:text-dark-text/70">Year</dt>
-                    <dd class="text-sm text-light-text dark:text-dark-text">{mockYear}</dd>
-                  </div>
-                  <div>
-                    <dt class="text-sm font-medium text-light-text/70 dark:text-dark-text/70">Type</dt>
-                    <dd class="text-sm text-light-text dark:text-dark-text">{mockProjectType}</dd>
-                  </div>
-                </dl>
-              </div>
-
-              <!-- Technologies -->
-              <div class="p-6 rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10">
-                <h3 class="text-lg font-semibold text-light-text dark:text-dark-text mb-4">
-                  Technologies Used
-                </h3>
-                <div class="flex flex-wrap gap-2">
-                  {mockTechnologies.map((tech) => (
-                    <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
-                      {tech}
-                    </span>
-                  ))}
-                </div>
-              </div>
-
-              <!-- Navigation -->
-              <div class="p-6 rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10">
-                <h3 class="text-lg font-semibold text-light-text dark:text-dark-text mb-4">
-                  Quick Links
-                </h3>
-                <div class="space-y-3">
-                  <a href="#" class="flex items-center text-sm text-light-text/80 dark:text-dark-text/80 hover:text-primary transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14" />
-                    </svg>
-                    Live Demo
-                  </a>
-                  <a href="#" class="flex items-center text-sm text-light-text/80 dark:text-dark-text/80 hover:text-primary transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="currentColor" viewBox="0 0 20 20">
-                      <path fill-rule="evenodd" d="M12.316 3.051a1 1 0 01.633 1.265l-4 12a1 1 0 11-1.898-.632l4-12a1 1 0 011.265-.633zM5.707 6.293a1 1 0 010 1.414L3.414 10l2.293 2.293a1 1 0 11-1.414 1.414l-3-3a1 1 0 010-1.414l3-3a1 1 0 011.414 0zm8.586 0a1 1 0 011.414 0l3 3a1 1 0 010 1.414l-3 3a1 1 0 11-1.414-1.414L16.586 10l-2.293-2.293a1 1 0 010-1.414z" clip-rule="evenodd" />
-                    </svg>
-                    Source Code
-                  </a>
-                  <a href="/projects" class="flex items-center text-sm text-light-text/80 dark:text-dark-text/80 hover:text-primary transition-colors">
-                    <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
-                    </svg>
-                    All Projects
-                  </a>
-                </div>
-              </div>
+        <!-- SIDEBAR -->
+        <aside class="lg:col-span-1 space-y-8 ">
+          <div class=" sticky top-16 p-6 rounded-xl bg-light-background dark:bg-dark-codeBackground border border-light-text/10 dark:border-dark-text/10">
+            <h3 class="text-lg font-semibold text-light-text dark:text-dark-text mb-4">
+              Tecnologías usadas
+            </h3>
+            <div class="flex flex-wrap gap-2">
+              {proyecto.habilidades.map((habilidad) => (
+                <span class="inline-flex items-center px-3 py-1 rounded-full text-xs font-medium bg-primary/10 text-primary border border-primary/20">
+                  {habilidad.nombre}
+                </span>
+              ))}
             </div>
           </div>
-        </div>
+        </aside>
       </div>
 
-      <!-- Related Projects Section -->
-      <div class="bg-light-background dark:bg-dark-codeBackground border-t border-light-text/10 dark:border-dark-text/10">
+      <!-- PROYECTOS RELACIONADOS -->
+      <section class="bg-light-background dark:bg-dark-codeBackground border-t border-light-text/10 dark:border-dark-text/10">
         <div class="max-w-4xl mx-auto px-6 py-16">
           <h2 class="text-2xl font-bold text-light-text dark:text-dark-text mb-8 text-center">
-            More Projects
+            Más proyectos
           </h2>
           <div class="grid sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {[1, 2, 3].map((i) => (
-              <a href={`/projects/project-${i}`} class="group block p-6 rounded-xl bg-lightShades dark:bg-dark-background border border-light-text/10 dark:border-dark-text/10 hover:border-primary/30 transition-all duration-200 hover:shadow-lg">
-                <div class="aspect-video bg-gradient-to-br from-primary/20 to-lightAccent/20 rounded-lg mb-4 flex items-center justify-center">
+            {proyectosRelacionados.slice(0, 3).map((relacionado) => (
+            <a href={`/proyectos/${relacionado.slug}`} class="group block p-6 rounded-xl bg-lightShades dark:bg-dark-background border border-light-text/10 dark:border-dark-text/10 hover:border-primary/30 hover:shadow-lg transition-all duration-200">
+              <div class="aspect-video bg-gradient-to-br from-primary/20 to-lightAccent/20 rounded-lg mb-4 flex items-center justify-center">
+                {relacionado.tiny ? (
+                  <img src={relacionado.tiny} alt={relacionado.nombre} class="img-proyecto object-cover rounded-lg" />
+                ) : (
                   <svg class="w-8 h-8 text-primary" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5..." />
                   </svg>
-                </div>
-                <h3 class="font-semibold text-light-text dark:text-dark-text group-hover:text-primary transition-colors">
-                  Related Project {i}
-                </h3>
-                <p class="text-sm text-light-text/70 dark:text-dark-text/70 mt-1">
-                  Brief description of this related project.
-                </p>
-              </a>
-            ))}
+                )}
+              </div>
+              <h3 class="font-semibold text-light-text dark:text-dark-text group-hover:text-primary">
+                {relacionado.nombre}
+              </h3>
+              <p class="text-sm text-light-text/70 dark:text-dark-text/70 mt-1">
+                {relacionado.introduccion || 'Sin descripción disponible.'}
+              </p>
+            </a>
+          ))}
           </div>
         </div>
-      </div>
+      </section>
     </article>
   ) : (
     <div class="min-h-screen flex items-center justify-center bg-lightShades dark:bg-dark-background">
@@ -296,13 +166,13 @@ const mockYear = "2024";
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-2.5L13.732 4c-.77-.833-1.964-.833-2.732 0L4.082 16.5c-.77.833.192 2.5 1.732 2.5z" />
           </svg>
         </div>
-        <h1 class="text-2xl font-bold text-light-text dark:text-dark-text">Project Not Found</h1>
-        <p class="text-light-text/70 dark:text-dark-text/70">The project you're looking for could not be loaded.</p>
+        <h1 class="text-2xl font-bold text-light-text dark:text-dark-text">Proyecto no encontrado</h1>
+        <p class="text-light-text/70 dark:text-dark-text/70">El proyecto que buscas no ha podido ser cargado.</p>
         <a href="/projects" class="inline-flex items-center px-4 py-2 bg-primary hover:bg-primary/90 text-white font-medium rounded-lg transition-colors">
           <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 19l-7-7m0 0l7-7m-7 7h18" />
           </svg>
-          Back to Projects
+          Volver a los proyectos
         </a>
       </div>
     </div>

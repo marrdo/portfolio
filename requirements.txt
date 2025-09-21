@@ -10,3 +10,4 @@ djangorestframework==3.15.2
 psycopg2==2.9.10
 unidecode
 phonenumbers==8.13.52
+gunicorn==23.0.0

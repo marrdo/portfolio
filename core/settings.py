@@ -17,7 +17,7 @@ USE_TZ = True # Hace que Django almacene los datos en UTC internamente y los con
 SECRET_KEY = os.environ.get('SECRET_KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get('DEBUG')
+DEBUG = False
 
 ALLOWED_HOSTS = env.list('ALLOWED_HOSTS_DEV')
 

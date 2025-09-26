@@ -34,9 +34,9 @@ try {
           <div class="relative overflow-hidden flex items-center justify-center bg-gray-600">
             <figure  class="transition-transform duration-500 group-hover:scale-110 img-proyecto" >
               <picture>
-                <source srcset={proyecto.tiny} media="(max-width: 640px)" />
-                <source srcset={proyecto.thumbnail} media="(min-width: 640px)" />
-                <img src={proyecto.thumbnail} alt={proyecto.title} class="" />
+                {/* <source srcset={proyecto.tiny} media="(max-width: 640px)" />
+                <source srcset={proyecto.thumbnail} media="(min-width: 640px)" /> */}
+                <img src={`/img/projects/${encodeURIComponent(proyecto.nombre)}.png`} alt={proyecto.nombre} />
               </picture>
             </figure>
             <div class="absolute inset-0 bg-gradient-to-t from-transparent to-primary opacity-10"></div>

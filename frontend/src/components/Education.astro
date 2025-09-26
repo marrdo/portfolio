@@ -52,7 +52,7 @@ function tieneContenidoDescripcion(html: string): boolean {
 
   return true;
 }
-
+console.log(educacionList);
 ---
 
 <section id="educacion" class="py-20 relative">
@@ -98,7 +98,7 @@ function tieneContenidoDescripcion(html: string): boolean {
                 <figure id={`titulo-img-${index}`} class="mt-4 oculta transicion">
                     <picture>
                         <img
-                        src={edu.thumbnail_titulo}
+                        src={`/img/titulo/${encodeURIComponent(edu.slug)}.png`}
                         alt={`Título de ${edu.titulo}`}
                         class="max-w-full rounded shadow-md hover:scale-105 transition-transform"
                         />

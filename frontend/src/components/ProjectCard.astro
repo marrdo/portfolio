@@ -15,8 +15,6 @@ interface Props {
 }
 
 const { titulo, descripcion, slug, habilidades, thumbnail, tiny, imageAlt, link, github } = Astro.props;
-console.log('imagen de Desktop', thumbnail);
-console.log('Imagen de mobile', tiny);
 ---
 
   <article
@@ -25,9 +23,9 @@ console.log('Imagen de mobile', tiny);
     <div class="relative overflow-hidden flex items-center justify-center bg-gray-600">
       <figure  class="transition-transform duration-500 group-hover:scale-110 img-proyecto" >
         <picture>
-          <source srcset={tiny} media="(max-width: 640px)" />
-          <source srcset={thumbnail} media="(min-width: 640px)" />
-          <img src={thumbnail} alt={titulo} class="" />
+          <!-- <source srcset={tiny} media="(max-width: 640px)" /> -->
+          <!-- <source srcset={thumbnail} media="(min-width: 640px)" /> -->
+          <img src={`/img/projects/${encodeURIComponent(titulo)}.png`} alt={titulo} />
         </picture>
       </figure>
       <div class="absolute inset-0 bg-gradient-to-t from-transparent to-primary opacity-10"></div>

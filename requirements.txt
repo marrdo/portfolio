@@ -11,3 +11,4 @@ psycopg2==2.9.10
 unidecode
 phonenumbers==8.13.52
 gunicorn==23.0.0
+whitenoise==6.5.0

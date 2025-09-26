@@ -1,7 +1,7 @@
 // API utility functions for fetching data from Django Rest Framework
 
 // Base API URL - replace with your actual API URL in production
-const API_BASE_URL = "https://portfolio-backend-i67j.onrender.com"
+const API_BASE_URL = import.meta.env.PUBLIC_API_URL || "http://localhost:8000";
 
 
 // Generic fetch function with error handling
